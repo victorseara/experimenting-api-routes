@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@self/api-core-old": ["libs/api-utils/api-core-old/src/index.ts"],
+      "@self/api-core": ["libs/api-utils/api-core/src/index.ts"],
       "@self/api-core/server": ["libs/api-utils/api-core/src/server.ts"]
     }
   },

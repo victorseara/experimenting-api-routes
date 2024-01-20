@@ -8,6 +8,14 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/libs/api-utils/api-core"],
+      "options": {
+        "jestConfig": "libs/api-utils/api-core/jest.config.js",
+        "passWithNoTests": true
+      }
     }
   }
 }

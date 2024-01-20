@@ -1,7 +1,7 @@
 {
-  "name": "api-core",
+  "name": "api-core-old",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/api-utils/api-core/src",
+  "sourceRoot": "libs/api-utils/api-core-old/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -11,9 +11,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/libs/api-utils/api-core"],
+      "outputs": ["{workspaceRoot}/coverage/libs/api-utils/api-core-old"],
       "options": {
-        "jestConfig": "libs/api-utils/api-core/jest.config.js",
+        "jestConfig": "libs/api-utils/api-core-old/jest.config.js",
         "passWithNoTests": true
       }
     }

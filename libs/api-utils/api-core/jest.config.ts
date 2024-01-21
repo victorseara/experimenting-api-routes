@@ -7,8 +7,12 @@ export default {
       '@swc/jest',
       {
         jsc: {
-          parser: { syntax: 'typescript', tsx: true },
-          transform: { react: { runtime: 'automatic' } },
+          parser: { syntax: 'typescript', tsx: false, decorators: true },
+          transform: {
+            react: { runtime: 'automatic' },
+            legacyDecorator: true,
+            decoratorMetadata: true,
+          },
         },
       },
     ],

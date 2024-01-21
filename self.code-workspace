@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "path": "."
+    },
+    {
+      "name": "api-core",
+      "path": "./libs/api-utils/api-core"
+    }
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["self", "self"],
+    "liveServer.settings.multiRootWorkspaceName": "root"
+  }
+}

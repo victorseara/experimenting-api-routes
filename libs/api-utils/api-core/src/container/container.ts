@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { DependencyContainer, container } from 'tsyringe';
 import { IContainer } from './container.types';
 
@@ -27,7 +28,9 @@ export class Container implements IContainer {
     this.#container.register<T>(token, { useValue: value });
   }
 
-  isRegistered(token: string): boolean {
+  isRegistered(token?: string): token is string {
+    if (!token) return false;
+
     const isInjected = this.#injectionKeys.has(token);
 
     if (!isInjected) {
@@ -42,6 +45,8 @@ export class Container implements IContainer {
   }
 
   dispose(): void {
+    this.#injectionKeys.clear();
+    this.#container.reset();
     this.#container.dispose();
   }
 }

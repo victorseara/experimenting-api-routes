@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "test": "nx test -t api-core --"
+  }
+}

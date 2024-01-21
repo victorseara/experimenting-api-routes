@@ -24,6 +24,6 @@ export type TRouteInjectionKey = z.infer<typeof routeInjectionKeySchema>;
 
 export interface IRouteConfiguration {
   method: TRouteMethod;
-  path: `/api/${string}`;
+  path: `/${string}`;
   injectionKey: TRouteInjectionKey;
 }

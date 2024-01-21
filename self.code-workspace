@@ -5,6 +5,14 @@
       "path": "."
     },
     {
+      "name": "web",
+      "path": "./apps/web"
+    },
+    {
+      "name": "api",
+      "path": "./libs/features/api"
+    },
+    {
       "name": "api-core",
       "path": "./libs/api-utils/api-core"
     },

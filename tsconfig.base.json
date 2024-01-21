@@ -19,6 +19,7 @@
     "paths": {
       "@self/api-core": ["libs/api-utils/api-core/src/index.ts"],
       "@self/api-core/server": ["libs/api-utils/api-core/src/server.ts"],
+      "@self/api/server": ["libs/features/api/src/server.ts"],
       "@self/open-api": ["libs/api-utils/open-api/src/index.ts"]
     }
   },

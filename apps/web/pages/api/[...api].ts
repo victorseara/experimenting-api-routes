@@ -7,7 +7,7 @@ import {
 } from '@self/home-page/server';
 
 const apiRouter = new Router({
-  log: 'debug',
+  log: 'info',
   routes: {
     [listAvailablePetsConfig.injectionKey]: ListAvailablePets,
   },

@@ -11,3 +11,9 @@ export * from './open-api/open-api-abstract';
 export type * from './open-api/open-api.types';
 
 export * from './injection-keys';
+
+export * from './errors/api-errors';
+export * from './errors/error-factory';
+
+export * from './logger/logger';
+export type * from './logger/logger.types';

@@ -2,8 +2,8 @@ import { Container } from '../container/container';
 import type { IContainer } from '../container/container.types';
 import { SharedInjectionKeys } from '../injection-keys';
 import { ApiLogger } from '../logger/logger';
-import { IApiLogger, ILogger } from '../logger/logger.types';
-import { IRoute } from '../server';
+import { IApiLogger } from '../logger/logger.types';
+import { ErrorFactory, IRoute, InternalServerError } from '../server';
 import type {
   IRouter,
   TRouteHandlerContext,
@@ -26,12 +26,8 @@ export class Router implements IRouter {
       const routeHandler = this.#getRouteHandler(context.request);
       await routeHandler.handler();
     } catch (error) {
-      console.log({ error });
-      response.status(500).json({
-        error: {
-          message: 'Failed to execute route',
-        },
-      });
+      const apiError = ErrorFactory.create(error);
+      response.status(apiError.statusCode).json(apiError);
     } finally {
       this.#container?.dispose();
     }
@@ -80,32 +76,40 @@ export class Router implements IRouter {
   }
 
   #registerLogger() {
-    this.#container?.registerValue(
+    if (!this.#container) {
+      throw new InternalServerError('Container not initialized');
+    }
+
+    this.#container.registerValue(
       SharedInjectionKeys.LogLevel,
       this.config.log ?? 'silent'
     );
 
-    this.#container?.registerClass<IApiLogger>(
+    this.#container.registerClass<IApiLogger>(
       SharedInjectionKeys.Logger,
       ApiLogger
     );
   }
 
   #getRouteHandler(request: TRouteHandlerContext['request']) {
+    if (!this.#container) {
+      throw new InternalServerError('Container not initialized');
+    }
+
     const fullPath = request.url;
     const method = request.method;
 
     if (!fullPath || !method) {
-      throw Error('The request is invalid');
+      throw new InternalServerError('Invalid request');
     }
 
     if (fullPath.includes('auth')) {
-      return this.#container?.resolve<IRoute>(SharedInjectionKeys.Auth);
+      return this.#container.resolve<IRoute>(SharedInjectionKeys.Auth);
     }
 
     const requestKey = `${method} ${fullPath}`;
 
-    if (this.#container?.isRegistered(requestKey)) {
+    if (this.#container.isRegistered(requestKey)) {
       return this.#container.resolve<IRoute>(requestKey);
     }
 
@@ -126,8 +130,8 @@ export class Router implements IRouter {
       });
     });
 
-    if (!this.#container?.isRegistered(routeKey)) {
-      throw Error(`Route not registered: ${requestKey}`);
+    if (!this.#container.isRegistered(routeKey)) {
+      throw new InternalServerError(`Route not registered: ${requestKey}`);
     }
 
     return this.#container.resolve<IRoute>(routeKey);

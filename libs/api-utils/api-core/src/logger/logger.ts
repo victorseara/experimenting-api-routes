@@ -1,9 +1,9 @@
-import { LevelWithSilent, pino } from 'pino';
+import { pino } from 'pino';
 import pretty from 'pino-pretty';
 import { inject, singleton } from 'tsyringe';
-import type { IApiLogger } from './logger.types';
 import { SharedInjectionKeys } from '../injection-keys';
 import { TRouterConfiguration } from '../server';
+import type { IApiLogger } from './logger.types';
 
 @singleton()
 export class ApiLogger implements IApiLogger {
@@ -23,7 +23,10 @@ export class ApiLogger implements IApiLogger {
         name,
         level: this.logLevel ?? 'silent',
       },
-      pretty()
+      pretty({
+        ignore: 'time,pid,hostname,req,config',
+        singleLine: true,
+      })
     );
   }
 }

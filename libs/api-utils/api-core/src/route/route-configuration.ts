@@ -8,11 +8,13 @@ import type {
 export class RouteConfiguration implements IRouteConfiguration {
   constructor(public method: TRouteMethod, public path: `/api/${string}`) {}
 
-  get injectionKey() {
+  get injectionKey(): TRouteInjectionKey {
     const injectionKey = `${this.method} ${this.path}`;
+
     if (this.#isInjectionKey(injectionKey)) {
       return injectionKey;
     }
+
     throw new Error(`Invalid injection key: ${injectionKey}`);
   }
 
@@ -22,6 +24,7 @@ export class RouteConfiguration implements IRouteConfiguration {
     if (result.success) {
       return true;
     }
+    console.log(result.error);
     return false;
   }
 }

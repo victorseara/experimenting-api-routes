@@ -6,7 +6,7 @@ export interface IOpenApiAbstract<ClientType> {
   getClient(): Promise<ClientType>;
 }
 
-export interface IOpenApiAbstractImplementation<ClientType> {
+export interface IOpenApiAbstractImplementation<ClientType = {}> {
   new (
     definition: TOpenApiDefinition,
     url: string

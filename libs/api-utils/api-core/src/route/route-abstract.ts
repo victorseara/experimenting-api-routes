@@ -11,5 +11,5 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
 }
 
 export interface IAbstractRouteImplementation {
-  new (...args: any[]): AbstractRoute<unknown>;
+  new (...args: any[]): AbstractRoute<any>;
 }

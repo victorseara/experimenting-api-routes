@@ -3,6 +3,7 @@ import type { IContainer } from '../container/container.types';
 import { SharedInjectionKeys } from '../injection-keys';
 import { ApiLogger } from '../logger/logger';
 import { IApiLogger, ILogger } from '../logger/logger.types';
+import { IRoute } from '../server';
 import type {
   IRouter,
   TRouteHandlerContext,
@@ -11,34 +12,38 @@ import type {
 } from './router.types';
 
 export class Router implements IRouter {
-  #container: IContainer;
-  #basePath = '/api';
-  #logger: ILogger;
+  #container: IContainer | null;
 
   constructor(private readonly config: TRouterConfiguration) {
-    this.#container = new Container();
-    this.#logger = new ApiLogger(config.log ?? 'silent').getLogger(Router.name);
+    this.#container = null;
   }
 
-  handler: TRouterHandler = async (context) => {
+  handler: TRouterHandler = async (request, response) => {
     try {
+      this.#container = new Container();
+      const context = { request, response };
       await this.#injectDependencies(context);
       const routeHandler = this.#getRouteHandler(context.request);
-      await routeHandler.handler(context);
+      await routeHandler.handler();
     } catch (error) {
-      context.response.status(500).json({ error: 'Failed to execute route' });
+      console.log({ error });
+      response.status(500).json({
+        error: {
+          message: 'Failed to execute route',
+        },
+      });
     } finally {
-      this.#container.dispose();
+      this.#container?.dispose();
     }
   };
 
   async #injectDependencies(context: TRouteHandlerContext) {
-    this.#container.registerValue(SharedInjectionKeys.RequestContext, context);
+    this.#container?.registerValue(SharedInjectionKeys.RequestContext, context);
     this.#registerRoutes();
     this.#registerEnv();
     this.#registerAuth();
     this.#registerLogger();
-    await this.#registerOpenApi();
+    this.#registerOpenApi();
     await this.config.dependencies?.(this.#container);
   }
 
@@ -46,16 +51,12 @@ export class Router implements IRouter {
     const routes = Object.entries(this.config.routes);
 
     routes.forEach(([key, value]) => {
-      this.#container.registerClass(key, value);
+      this.#container?.registerClass(key, value);
     });
   }
 
   #registerEnv() {
-    if (!this.config.env) {
-      return;
-    }
-
-    this.#container.registerValue(SharedInjectionKeys.Env, this.config.env);
+    this.#container?.registerValue(SharedInjectionKeys.Env, process.env);
   }
 
   async #registerOpenApi() {
@@ -65,36 +66,33 @@ export class Router implements IRouter {
 
     const openApi = Object.entries(this.config.openApi);
 
-    const promises = openApi.map(([key, value]) => {
-      this.#container.registerOpenApiAdapter(key, value);
-    });
-
-    await Promise.all(promises);
+    openApi.forEach(([key, value]) =>
+      this.#container?.registerOpenApiAdapter(key, value)
+    );
   }
 
   #registerAuth() {
     if (!this.config.auth) {
-      this.#logger.debug('No auth route registered');
       return;
     }
 
-    this.#container.registerClass(SharedInjectionKeys.Auth, this.config.auth);
+    this.#container?.registerClass(SharedInjectionKeys.Auth, this.config.auth);
   }
 
   #registerLogger() {
-    this.#container.registerValue(
+    this.#container?.registerValue(
       SharedInjectionKeys.LogLevel,
       this.config.log ?? 'silent'
     );
 
-    this.#container.registerClass<IApiLogger>(
+    this.#container?.registerClass<IApiLogger>(
       SharedInjectionKeys.Logger,
       ApiLogger
     );
   }
 
   #getRouteHandler(request: TRouteHandlerContext['request']) {
-    const fullPath = request.url?.replace(this.#basePath, '');
+    const fullPath = request.url;
     const method = request.method;
 
     if (!fullPath || !method) {
@@ -102,13 +100,13 @@ export class Router implements IRouter {
     }
 
     if (fullPath.includes('auth')) {
-      return this.#container.resolve<IRouter>(SharedInjectionKeys.Auth);
+      return this.#container?.resolve<IRoute>(SharedInjectionKeys.Auth);
     }
 
     const requestKey = `${method} ${fullPath}`;
 
-    if (this.#container.isRegistered(requestKey)) {
-      return this.#container.resolve<IRouter>(requestKey);
+    if (this.#container?.isRegistered(requestKey)) {
+      return this.#container.resolve<IRoute>(requestKey);
     }
 
     const pathWithoutQuery = fullPath.split('?')[0];
@@ -128,11 +126,11 @@ export class Router implements IRouter {
       });
     });
 
-    if (!this.#container.isRegistered(routeKey)) {
-      throw Error('Route not registered');
+    if (!this.#container?.isRegistered(routeKey)) {
+      throw Error(`Route not registered: ${requestKey}`);
     }
 
-    return this.#container.resolve<IRouter>(routeKey);
+    return this.#container.resolve<IRoute>(routeKey);
   }
 }
 

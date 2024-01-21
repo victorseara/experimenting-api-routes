@@ -13,6 +13,10 @@
       "path": "./libs/features/api"
     },
     {
+      "name": "home-page",
+      "path": "./libs/features/home-page"
+    },
+    {
       "name": "api-core",
       "path": "./libs/api-utils/api-core"
     },

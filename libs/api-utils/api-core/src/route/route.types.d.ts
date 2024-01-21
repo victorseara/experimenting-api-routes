@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { routeInjectionKeySchema } from './route.schemas';
 import { z } from 'zod';
 
-export type TRouteContext<Output> = {
+export type TRouteContext<Output = {}> = {
   request: NextApiRequest;
   response: NextApiResponse<Output>;
 };

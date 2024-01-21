@@ -29,16 +29,15 @@ export class Container implements IContainer {
     this.#container.register<T>(token, { useValue: value });
   }
 
-  async registerOpenApiAdapter<T>(
+  async registerOpenApiAdapter(
     token: string,
-    value: IOpenApiAbstractImplementation<T>
+    value: IOpenApiAbstractImplementation
   ): Promise<void> {
     if (this.isRegistered(token)) {
       throw new Error(`Token ${token} is already registered`);
     }
 
-    const client = await value.getClient();
-    this.#container.register<T>(token, { useValue: client });
+    this.#container.register(token, { useClass: value });
   }
 
   isRegistered(token?: string): token is string {

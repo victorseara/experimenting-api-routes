@@ -7,6 +7,10 @@
     {
       "name": "api-core",
       "path": "./libs/api-utils/api-core"
+    },
+    {
+      "name": "open-api",
+      "path": "./libs/api-utils/open-api"
     }
   ],
   "settings": {

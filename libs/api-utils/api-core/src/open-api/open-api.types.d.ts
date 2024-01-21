@@ -1,12 +1,14 @@
-import { Document } from 'openapi-client-axios';
+import { AxiosInstance, Document } from 'openapi-client-axios';
 
 export type TOpenApiDefinition = string | Document | any;
 
 export interface IOpenApiAbstract<ClientType> {
-  getClient(): Promise<ClientType>;
+  getClient(token?: string): Promise<ClientType>;
 }
 
-export interface IOpenApiAbstractImplementation<ClientType = {}> {
+export interface IOpenApiAbstractImplementation<
+  ClientType extends AxiosInstance = {}
+> {
   new (
     definition: TOpenApiDefinition,
     url: string

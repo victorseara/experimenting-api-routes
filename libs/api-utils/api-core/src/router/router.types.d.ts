@@ -1,4 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { LevelWithSilent } from 'pino';
+import { z } from 'zod';
 import type { IAbstractRouteImplementation } from '../route/route-abstract';
 import type { TRouteInjectionKey } from '../route/route.types';
 
@@ -7,8 +9,17 @@ export type TRouteRecord = Record<
   IAbstractRouteImplementation
 >;
 
+export type TOpenApiRecord = Record<
+  string,
+  IOpenApiAbstractImplementation<any>
+>;
+
 export type TRouterConfiguration = {
   routes: TRouteRecord;
+  openApi?: TOpenApiRecord;
+  env?: z.ZodTypeAny;
+  auth?: IAbstractRouteImplementation;
+  log?: LevelWithSilent;
 };
 
 export type TRouteHandlerContext = {

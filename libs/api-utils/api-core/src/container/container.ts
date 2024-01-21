@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DependencyContainer, container } from 'tsyringe';
 import { IContainer } from './container.types';
+import type { IOpenApiAbstractImplementation } from '../open-api/open-api.types';
 
 export class Container implements IContainer {
   #injectionKeys = new Set<string>();
@@ -26,6 +27,18 @@ export class Container implements IContainer {
 
     this.#injectionKeys.add(token);
     this.#container.register<T>(token, { useValue: value });
+  }
+
+  async registerOpenApiAdapter<T>(
+    token: string,
+    value: IOpenApiAbstractImplementation<T>
+  ): Promise<void> {
+    if (this.isRegistered(token)) {
+      throw new Error(`Token ${token} is already registered`);
+    }
+
+    const client = await value.getClient();
+    this.#container.register<T>(token, { useValue: client });
   }
 
   isRegistered(token?: string): token is string {

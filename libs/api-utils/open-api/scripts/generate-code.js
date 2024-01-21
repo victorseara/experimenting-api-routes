@@ -12,8 +12,6 @@ if (selectedSpecs.length === 0) {
   console.info('No spec selected, exiting');
 }
 
-const spinner = ora().start('Processing specs...');
-
 const typesOutputDir = path.resolve(
   process.cwd(),
   './libs/api-utils/open-api/src/types'
@@ -47,7 +45,7 @@ try {
         outputDir: definitionsOutputDir,
       });
     } catch (error) {
-      spinner.warn(`The spec ${spec.name} was not processed.`);
+      ora().warn(`The spec ${spec.name} was not processed.`);
     }
   }
 } catch (error) {

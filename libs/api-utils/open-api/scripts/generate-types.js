@@ -17,7 +17,7 @@ export async function generateTypes(spec) {
   fs.mkdirSync(spec.outputDir, { recursive: true });
   try {
     const name = kebabCase(spec.name);
-    const filePath = path.join(spec.directory, `SWAGGER_${name}.json`);
+    const filePath = path.join(spec.directory, `${spec.name}.json`);
     const outputFile = fs.createWriteStream(
       path.join(spec.outputDir, `${name}.d.ts`)
     );

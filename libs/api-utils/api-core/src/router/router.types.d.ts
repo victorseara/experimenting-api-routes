@@ -20,6 +20,7 @@ export type TRouterConfiguration = {
   env?: z.ZodTypeAny;
   auth?: IAbstractRouteImplementation;
   log?: LevelWithSilent;
+  dependencies?: (container: IContainer) => void | Promise<void>;
 };
 
 export type TRouteHandlerContext = {

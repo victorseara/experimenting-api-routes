@@ -10,7 +10,7 @@ export type * from './route/route.types';
 export * from './open-api/open-api-abstract';
 export type * from './open-api/open-api.types';
 
-export * from './injection-keys';
+export * from './core-injection-keys';
 
 export * from './errors/api-errors';
 export * from './errors/error-factory';

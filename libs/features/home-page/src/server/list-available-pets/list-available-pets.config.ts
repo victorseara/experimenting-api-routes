@@ -1,6 +1,6 @@
-import { RouteConfiguration } from '@self/api-core/server';
+import { RouteConfiguration } from '@self/api-core';
 
-export const listAvailablePetsConfig = new RouteConfiguration(
+export const ListAvailablePetsConfig = new RouteConfiguration(
   'GET',
   '/api/home-page/list-available-pets'
 );

@@ -1,14 +1,14 @@
 import { pino } from 'pino';
 import pretty from 'pino-pretty';
 import { inject, singleton } from 'tsyringe';
-import { SharedInjectionKeys } from '../injection-keys';
+import { CoreInjectionKeys } from '../core-injection-keys';
 import { TRouterConfiguration } from '../server';
 import type { IApiLogger } from './logger.types';
 
 @singleton()
 export class ApiLogger implements IApiLogger {
   constructor(
-    @inject(SharedInjectionKeys.LogLevel)
+    @inject(CoreInjectionKeys.LogLevel)
     private readonly logLevel: TRouterConfiguration['log']
   ) {}
 

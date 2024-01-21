@@ -1,9 +1,8 @@
-import { Container } from '../container/container';
-import type { IContainer } from '../container/container.types';
-import { SharedInjectionKeys } from '../injection-keys';
-import { ApiLogger } from '../logger/logger';
-import { IApiLogger } from '../logger/logger.types';
-import { ErrorFactory, IRoute, InternalServerError } from '../server';
+import { ApiContainer } from '../api-container/api-container';
+import type { IApiContainer } from '../api-container/api-container.types';
+import { ErrorFactory } from '../errors/error-factory';
+import { RouteDiscover } from '../route-discover/route-discover';
+import { IRouteDiscover } from '../route-discover/route-discover.types';
 import type {
   IRouter,
   TRouteHandlerContext,
@@ -12,145 +11,28 @@ import type {
 } from './router.types';
 
 export class Router implements IRouter {
-  #container: IContainer | null;
+  #container: IApiContainer;
 
   constructor(private readonly config: TRouterConfiguration) {
-    this.#container = null;
+    this.#container = new ApiContainer(config);
   }
 
   handler: TRouterHandler = async (request, response) => {
     try {
-      this.#container = new Container();
-      const context = { request, response };
-      await this.#injectDependencies(context);
-      const routeHandler = this.#getRouteHandler(context.request);
+      await this.#initializeHandler({ request, response });
+      const routeDiscover = new RouteDiscover(this.config.routes, request);
+      const routeHandler = routeDiscover.execute(this.#container.current);
       await routeHandler.handler();
     } catch (error) {
       const apiError = ErrorFactory.create(error);
       response.status(apiError.statusCode).json(apiError);
     } finally {
-      this.#container?.dispose();
+      this.#container.current.dispose();
     }
   };
 
-  async #injectDependencies(context: TRouteHandlerContext) {
-    this.#container?.registerValue(SharedInjectionKeys.RequestContext, context);
-    this.#registerRoutes();
-    this.#registerEnv();
-    this.#registerAuth();
-    this.#registerLogger();
-    this.#registerOpenApi();
-    await this.config.dependencies?.(this.#container);
-  }
-
-  #registerRoutes() {
-    const routes = Object.entries(this.config.routes);
-
-    routes.forEach(([key, value]) => {
-      this.#container?.registerClass(key, value);
-    });
-  }
-
-  #registerEnv() {
-    this.#container?.registerValue(SharedInjectionKeys.Env, process.env);
-  }
-
-  async #registerOpenApi() {
-    if (!this.config.openApi) {
-      return;
-    }
-
-    const openApi = Object.entries(this.config.openApi);
-
-    openApi.forEach(([key, value]) =>
-      this.#container?.registerOpenApiAdapter(key, value)
-    );
-  }
-
-  #registerAuth() {
-    if (!this.config.auth) {
-      return;
-    }
-
-    this.#container?.registerClass(SharedInjectionKeys.Auth, this.config.auth);
-  }
-
-  #registerLogger() {
-    if (!this.#container) {
-      throw new InternalServerError('Container not initialized');
-    }
-
-    this.#container.registerValue(
-      SharedInjectionKeys.LogLevel,
-      this.config.log ?? 'silent'
-    );
-
-    this.#container.registerClass<IApiLogger>(
-      SharedInjectionKeys.Logger,
-      ApiLogger
-    );
-  }
-
-  #getRouteHandler(request: TRouteHandlerContext['request']) {
-    if (!this.#container) {
-      throw new InternalServerError('Container not initialized');
-    }
-
-    const fullPath = request.url;
-    const method = request.method;
-
-    if (!fullPath || !method) {
-      throw new InternalServerError('Invalid request');
-    }
-
-    if (fullPath.includes('auth')) {
-      return this.#container.resolve<IRoute>(SharedInjectionKeys.Auth);
-    }
-
-    const requestKey = `${method} ${fullPath}`;
-
-    if (this.#container.isRegistered(requestKey)) {
-      return this.#container.resolve<IRoute>(requestKey);
-    }
-
-    const pathWithoutQuery = fullPath.split('?')[0];
-    const pathParams = pathWithoutQuery.split('/').filter(Boolean);
-
-    const routeKeys = Object.keys(this.config.routes);
-
-    const routeKey = routeKeys.find((key) => {
-      const keyParts = key.split(' ')[1].split('/').filter(Boolean);
-
-      if (keyParts.length !== pathParams.length) {
-        return false;
-      }
-
-      return keyParts.every((part, index) => {
-        return part.startsWith(':') || part === pathParams[index];
-      });
-    });
-
-    if (!this.#container.isRegistered(routeKey)) {
-      throw new InternalServerError(`Route not registered: ${requestKey}`);
-    }
-
-    return this.#container.resolve<IRoute>(routeKey);
+  async #initializeHandler(context: TRouteHandlerContext) {
+    await this.#container.initialize();
+    this.#container.addRequestContext(context);
   }
 }
-
-/**
- * Create a new route
- *  -> route.method.ts
- *  -> route.schema.ts
- *  -> route.config.ts
- *  -> route.client.ts
- *  -> route.method.test.ts
- * Create a new open api adapter
- *  -> open-api.adapter.ts
- *  -> open-api.config.ts
- * Create new operation
- *  -> shared.operation.ts
- *  -> shared.operation.schema.ts
- *  -> shared.operation.config.ts
- *  -> shared.operation.test.ts
- */

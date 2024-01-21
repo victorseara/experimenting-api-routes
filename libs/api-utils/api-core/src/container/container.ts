@@ -11,7 +11,7 @@ export class Container implements IContainer {
     this.#container = container.createChildContainer();
   }
 
-  registerClass<T>(token: string, value: new (...args: unknown[]) => T): void {
+  registerClass<T>(token: string, value: new (...args: any[]) => T): void {
     if (this.isRegistered(token)) {
       throw new Error(`Token ${token} is already registered`);
     }

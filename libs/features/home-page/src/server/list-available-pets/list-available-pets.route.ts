@@ -1,19 +1,22 @@
 import {
   AbstractRoute,
   IOpenApiAbstractImplementation,
-  SharedInjectionKeys,
+  CoreInjectionKeys,
   TRouteContext,
   TRouteHandler,
 } from '@self/api-core/server';
-import { ListAvailablePetsResponse } from './list-available-pets.schema';
+import {
+  AvailablePetsResponse,
+  AvailablePets,
+} from './list-available-pets.schema';
 import { inject, injectable } from 'tsyringe';
 import { InjectionKeys } from '@self/api/server';
 import { TPetStore } from '@self/open-api';
 
 @injectable()
-export class ListAvailablePets extends AbstractRoute<ListAvailablePetsResponse> {
+export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
   constructor(
-    @inject(SharedInjectionKeys.RequestContext)
+    @inject(CoreInjectionKeys.RequestContext)
     context: TRouteContext,
     @inject(InjectionKeys.PetStoreAdapter)
     private petStoreAdapter: IOpenApiAbstractImplementation<TPetStore.Client>
@@ -29,7 +32,7 @@ export class ListAvailablePets extends AbstractRoute<ListAvailablePetsResponse> 
       status: 'available',
     });
 
-    const pets: ListAvailablePetsResponse = response.data.map((pet) => ({
+    const pets: AvailablePets[] = response.data.map((pet) => ({
       id: pet.id,
       name: pet.name,
       status: pet.status,

@@ -4,7 +4,7 @@ import nodeMocksHttp from 'node-mocks-http';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { TRouteContext, TRouteHandler } from '../route/route.types';
 import { inject, injectable } from 'tsyringe';
-import { SharedInjectionKeys } from '../injection-keys';
+import { CoreInjectionKeys } from '../core-injection-keys';
 import { Container } from '../container/container';
 
 const mockHandler = jest.fn(() => Promise.resolve());
@@ -13,7 +13,7 @@ const mockAuthHandler = jest.fn(() => Promise.resolve());
 @injectable()
 class MockRoute extends AbstractRoute<unknown> {
   constructor(
-    @inject(SharedInjectionKeys.RequestContext) context: TRouteContext<unknown>
+    @inject(CoreInjectionKeys.RequestContext) context: TRouteContext<unknown>
   ) {
     super(context);
   }
@@ -24,7 +24,7 @@ class MockRoute extends AbstractRoute<unknown> {
 @injectable()
 class MockAuthRoute extends AbstractRoute<unknown> {
   constructor(
-    @inject(SharedInjectionKeys.RequestContext) context: TRouteContext<unknown>
+    @inject(CoreInjectionKeys.RequestContext) context: TRouteContext<unknown>
   ) {
     super(context);
   }

@@ -1,4 +1,4 @@
-export const SharedInjectionKeys = {
+export const CoreInjectionKeys = {
   RequestContext: 'RequestContext',
   Env: 'Env',
   Auth: 'Auth',

@@ -8,8 +8,7 @@ export type TRouteContext<Output = {}> = {
 };
 
 export type TRouteResponse<Output> = {
-  result?: Output;
-  error?: unknown;
+  result: Output;
 };
 
 export type TRouteHandler = () => void | Promise<void>;

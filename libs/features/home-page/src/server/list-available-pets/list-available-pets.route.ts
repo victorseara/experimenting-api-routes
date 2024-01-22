@@ -1,17 +1,14 @@
 import {
   AbstractRoute,
-  IOpenApiAbstractImplementation,
   CoreInjectionKeys,
+  IOpenApiAbstractImplementation,
   TRouteContext,
   TRouteHandler,
 } from '@self/api-core/server';
-import {
-  AvailablePetsResponse,
-  AvailablePets,
-} from './list-available-pets.schema';
-import { inject, injectable } from 'tsyringe';
 import { InjectionKeys } from '@self/api/server';
 import { TPetStore } from '@self/open-api';
+import { inject, injectable } from 'tsyringe';
+import { AvailablePetsResponse } from './list-available-pets.schema';
 
 @injectable()
 export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
@@ -32,7 +29,7 @@ export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
       status: 'available',
     });
 
-    const pets: AvailablePets[] = response.data.map((pet) => ({
+    const pets: AvailablePetsResponse = response.data.map((pet) => ({
       id: pet.id,
       name: pet.name,
       status: pet.status,

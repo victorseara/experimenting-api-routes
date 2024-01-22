@@ -1,15 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ListAvailablePetsClient } from '../server/list-available-pets/list-available-pets.client';
-import { AvailablePetsResult } from '../server/list-available-pets/list-available-pets.schema';
+import { AvailablePetsResponse } from '../server/list-available-pets/list-available-pets.schema';
+import axios from 'axios';
 
 export function useListAvailablePets() {
-  const [data, setData] = useState<AvailablePetsResult | null>(null);
+  const [client] = useState(() => axios.create({}));
+  const [data, setData] = useState<AvailablePetsResponse | null>(null);
 
-  const client = useMemo(() => new ListAvailablePetsClient(), []);
+  const listAvaliablePets = useMemo(
+    () => new ListAvailablePetsClient(client),
+    [client]
+  );
 
   useEffect(() => {
-    client.execute().then((response) => setData(response));
-  }, [client]);
+    listAvaliablePets.execute().then((response) => setData(response));
+  }, [listAvaliablePets]);
 
   return data;
 }

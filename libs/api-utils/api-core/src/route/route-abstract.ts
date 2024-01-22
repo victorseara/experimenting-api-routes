@@ -1,7 +1,12 @@
-import type { IRoute, TRouteContext, TRouteHandler } from './route.types';
+import type {
+  IRoute,
+  TRouteContext,
+  TRouteHandler,
+  TRouteResponse,
+} from './route.types';
 
 export abstract class AbstractRoute<T = unknown> implements IRoute {
-  constructor(protected context: TRouteContext<T>) {}
+  constructor(protected context: TRouteContext<TRouteResponse<T>>) {}
   abstract handler: TRouteHandler;
 }
 

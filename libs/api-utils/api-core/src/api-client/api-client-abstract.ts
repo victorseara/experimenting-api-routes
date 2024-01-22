@@ -1,24 +1,24 @@
-import axios, { AxiosInstance } from 'axios';
-import type { SSRRequest } from './api-client.types';
+import type { IHttpClient, SSRRequest } from './api-client.types';
+import { HttpClient } from './http-client';
 
 export abstract class AbstractApiClient<Input, Output> {
-  protected client: AxiosInstance;
+  protected client: IHttpClient;
 
-  constructor(client?: AxiosInstance, ssrRequest?: SSRRequest) {
+  constructor(client?: IHttpClient, ssrRequest?: SSRRequest) {
     this.client = this.#getClient(client, ssrRequest);
   }
 
   abstract execute(input?: Input): Promise<Output>;
 
-  #getClient(client?: AxiosInstance, ssrRequest?: SSRRequest) {
-    return client ?? this.#createSSRClient(ssrRequest);
+  #getClient(client?: IHttpClient, ssrRequest?: SSRRequest) {
+    return client ?? new HttpClient(undefined, this.#getSsrHeaders(ssrRequest));
   }
 
-  #createSSRClient(ssrRequest?: SSRRequest) {
-    return axios.create({
+  #getSsrHeaders(ssrRequest?: SSRRequest) {
+    return {
       headers: {
         cookie: ssrRequest?.headers.cookie,
       },
-    });
+    };
   }
 }

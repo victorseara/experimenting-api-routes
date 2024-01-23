@@ -8,7 +8,6 @@ import { PetStoreAdapter } from '@self/open-api';
 import { GetPetByIdConfig, GetPetByIdRoute } from '@self/pet-page/server';
 
 const apiRouter = new Router({
-  basePath: '/api/pets',
   log: 'info',
   routes: {
     [ListAvailablePetsConfig.injectionKey]: ListAvailablePets,

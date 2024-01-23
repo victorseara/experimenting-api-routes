@@ -14,6 +14,7 @@ export type TOpenApiRecord = Record<
 >;
 
 export type TRouterConfiguration = {
+  basePath?: string;
   routes: TRouteRecord;
   openApi?: TOpenApiRecord;
   auth?: IAbstractRouteImplementation;

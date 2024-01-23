@@ -8,7 +8,7 @@ import type {
 export class RouteConfiguration implements IRouteConfiguration {
   #path: string;
 
-  constructor(public method: TRouteMethod, path: `/api/${string}`) {
+  constructor(public method: TRouteMethod, path: `/${string}`) {
     this.#path = path;
   }
 
@@ -31,7 +31,6 @@ export class RouteConfiguration implements IRouteConfiguration {
     if (result.success) {
       return true;
     }
-    console.log(result.error);
     return false;
   }
 }

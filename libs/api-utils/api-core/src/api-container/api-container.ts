@@ -28,6 +28,10 @@ export class ApiContainer implements IApiContainer {
       this.#container?.registerClass(key, value);
     });
 
+    this.#container.registerValue(
+      CoreInjectionKeys.BasePath,
+      this.config.basePath ?? '/api'
+    );
     this.#container?.registerValue(CoreInjectionKeys.Env, process.env);
 
     if (this.config.auth) {

@@ -4,4 +4,5 @@ export const CoreInjectionKeys = {
   Auth: 'Auth',
   Logger: 'Logger',
   LogLevel: 'LogLevel',
+  BasePath: 'BasePath',
 } as const;

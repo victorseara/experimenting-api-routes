@@ -20,10 +20,12 @@ export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
   constructor(
     @inject(CoreInjectionKeys.RequestContext)
     context: TRouteContext,
+    @inject(CoreInjectionKeys.BasePath)
+    basePath: string,
     @inject(InjectionKeys.PetStoreAdapter)
     private petStoreAdapter: IOpenApiAbstractImplementation<TPetStore.Client>
   ) {
-    super(context, ListAvailablePetsConfig.injectionKey);
+    super(context, ListAvailablePetsConfig.injectionKey, basePath);
   }
 
   handler: TRouteHandler = async () => {

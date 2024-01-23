@@ -29,7 +29,7 @@ export function HomePage() {
             <div>{pet.images}</div>
             <div>{pet.status}</div>
             <div>{pet.id}</div>
-            <Link href={`/pet/${pet.id}`}>See more</Link>
+            <Link href={`/${pet.id}`}>See more</Link>
           </li>
         ))}
       </ul>

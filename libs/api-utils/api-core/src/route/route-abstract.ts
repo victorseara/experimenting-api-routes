@@ -13,7 +13,8 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
 
   constructor(
     protected context: TRouteContext<TRouteResponse<T>>,
-    private readonly injectionKey: TRouteInjectionKey
+    private readonly injectionKey: TRouteInjectionKey,
+    private readonly basePath = '/api'
   ) {}
   abstract handler: TRouteHandler;
 
@@ -75,7 +76,8 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
   };
 
   #getParamsMeta(requestPath: string) {
-    const splittedPath = requestPath.split('/').filter(Boolean).slice(1);
+    const pathWithoutBase = requestPath.replace(this.basePath, '');
+    const splittedPath = pathWithoutBase.split('/');
 
     const paramPosition = splittedPath.findIndex((item) =>
       item.startsWith(':')

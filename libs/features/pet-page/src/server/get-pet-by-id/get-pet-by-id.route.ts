@@ -18,10 +18,12 @@ export class GetPetByIdRoute extends AbstractRoute<GetPetByIdResponse> {
   constructor(
     @inject(CoreInjectionKeys.RequestContext)
     context: TRouteContext,
+    @inject(CoreInjectionKeys.BasePath)
+    basePath: string,
     @inject(InjectionKeys.PetStoreAdapter)
     private petStoreAdapter: IOpenApiAbstractImplementation<TPetStore.Client>
   ) {
-    super(context, GetPetByIdConfig.injectionKey);
+    super(context, GetPetByIdConfig.injectionKey, basePath);
   }
   handler: TRouteHandler = async () => {
     const { id } = this.parseParams<GetPetByIdParams>(paramsSchema);

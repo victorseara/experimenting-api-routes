@@ -18,7 +18,7 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
   ) {}
   abstract handler: TRouteHandler;
 
-  protected parseBody<Body>(schema: z.ZodType<Body>): Body {
+  protected parseBody<Body>(schema: z.ZodTypeAny): Body {
     const result = schema.safeParse(this.context.request.body);
 
     if (!result.success) {
@@ -55,7 +55,7 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
     return result.data;
   }
 
-  protected parseQuery<Query>(schema: z.ZodType<Query>): Query {
+  protected parseQuery<Query>(schema: z.ZodTypeAny): Query {
     const result = schema.safeParse(this.context.request.query);
 
     if (!result.success) {

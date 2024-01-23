@@ -1,8 +1,11 @@
+import { ILogger } from '../server';
+
 export class BaseApiError extends Error {
   constructor(
     readonly statusCode: number,
     message: string,
-    readonly details?: unknown
+    readonly details?: unknown,
+    readonly logger?: ILogger | Console
   ) {
     super(message);
   }

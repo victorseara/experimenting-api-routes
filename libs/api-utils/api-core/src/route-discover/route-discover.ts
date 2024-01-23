@@ -1,6 +1,6 @@
 import type { IContainer } from '../container/container.types';
-import { InternalServerError } from '../errors/api-errors';
 import { CoreInjectionKeys } from '../core-injection-keys';
+import { InternalServerError, NotFoundError } from '../errors/api-errors';
 import type { IRoute } from '../route/route.types';
 import type {
   TRouteHandlerContext,
@@ -38,7 +38,7 @@ export class RouteDiscover implements IRouteDiscover {
     );
 
     if (!container.isRegistered(injectionKey)) {
-      throw new InternalServerError(`Route not registered: ${injectionKey}`);
+      throw new NotFoundError(`Can't handle ${method} ${requestedPath}`);
     }
 
     return container.resolve<IRoute>(injectionKey);

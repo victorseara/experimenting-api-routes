@@ -24,7 +24,6 @@ export class ApiLogger implements IApiLogger {
         level: this.logLevel ?? 'silent',
       },
       pretty({
-        ignore: 'time,pid,hostname,req,config',
         singleLine: true,
       })
     );

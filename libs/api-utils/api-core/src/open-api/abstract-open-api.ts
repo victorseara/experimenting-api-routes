@@ -1,6 +1,7 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import OpenAPIClientAxios, { AxiosInstance } from 'openapi-client-axios';
-import type { IOpenApiAbstract, TOpenApiDefinition } from './open-api.types';
 import { ErrorFactory, ILogger } from '../server';
+import type { IOpenApiAbstract, TOpenApiDefinition } from './open-api.types';
 
 export abstract class AbstractOpenApi<ClientType extends AxiosInstance>
   implements IOpenApiAbstract<ClientType>
@@ -36,10 +37,10 @@ export abstract class AbstractOpenApi<ClientType extends AxiosInstance>
     client.interceptors.response.use(
       (response) => {
         this.logger.info(
-          response,
+          this.#formatResponse(response),
           `[HTTP Response]: ${response.request?.method?.toUpperCase()} ${
-            response.config.url
-          } succeeded with status code ${response.status}`
+            response.config.baseURL
+          }${response.config.url}`
         );
         return response;
       },
@@ -47,14 +48,45 @@ export abstract class AbstractOpenApi<ClientType extends AxiosInstance>
         const apiError = ErrorFactory.create(error);
 
         this.logger.error(
-          error,
+          this.#formatError(error),
           `[HTTP Response]: ${error.request?.method?.toUpperCase()} ${
-            error.config.url
-          } succeeded with status code ${error.status}`
+            error.config.baseURL
+          }${error.config.url}`
         );
 
         return Promise.reject(apiError);
       }
     );
+  }
+
+  #formatResponse(response: AxiosResponse) {
+    const dataString = JSON.stringify(response.data);
+    const dataSizeKB = dataString.length / 512;
+
+    return {
+      status: response.status,
+      data: Boolean(response.data),
+      size: dataSizeKB.toFixed(2).concat('KB'),
+      request: {
+        method: response.request?.method?.toUpperCase(),
+        url: `${response.config.baseURL}${response.config.url}`,
+        headers: response.config.headers,
+        params: response.config.params,
+      },
+    };
+  }
+
+  #formatError(error: AxiosError) {
+    return {
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+      request: {
+        method: error.request?.method?.toUpperCase(),
+        url: `${error.config?.baseURL}${error.config?.url}`,
+        headers: error.config?.headers,
+        params: error.config?.params,
+      },
+    };
   }
 }

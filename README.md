@@ -1,23 +1,23 @@
 # Development progress
 
-- [] Develop test strategy for Api Routes;
-- [] Implements multipart form data in Abstract Route;
-- [] Test Core lib;
-- [] Create operation interface;
-- [] Create snippets:
-  - [] Injecting Core dependencies;
-  - [] Create route;
-  - [] Create client;
-  - [] Create config;
-  - [] Create query;
-  - [] Create prefetchQuery;
-  - [] Create mutation;
-  - [] Create params schema + type;
-  - [] Create body schema + type;
-  - [] Create response type;
-  - [] Create operation;
-  - [] Inject open api adapter;
-- [] Create generator:
+- [ ] Develop test strategy for Api Routes;
+- [ ] Implements multipart form data in Abstract Route;
+- [ ] Test Core lib;
+- [ ] Create operation interface;
+- [ ] Create snippets:
+  - [ ] Injecting Core dependencies;
+  - [ ] Create route;
+  - [ ] Create client;
+  - [ ] Create config;
+  - [ ] Create query;
+  - [ ] Create prefetchQuery;
+  - [ ] Create mutation;
+  - [ ] Create params schema + type;
+  - [ ] Create body schema + type;
+  - [ ] Create response type;
+  - [ ] Create operation;
+  - [ ] Inject open api adapter;
+- [ ] Create generator:
   - feature generator
     - [feature-name] -> dir
       - src -> dir
@@ -40,5 +40,4 @@
       - get-[feature-name].schema
       - get-[feature-name].test
 - Route generator should add an entry to the server.ts and register the route in the api
-
 - Feature generator should register the generated route in the api and the generated page in the selected app;

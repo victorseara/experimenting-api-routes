@@ -16,7 +16,7 @@ export class RouteConfiguration implements IRouteConfiguration {
     return this.#path.replace(/\/:[^/]+/g, '');
   }
   get injectionKey(): TRouteInjectionKey {
-    const injectionKey = `${this.method} ${this.path}`;
+    const injectionKey = `${this.method} ${this.#path}`;
 
     if (this.#isInjectionKey(injectionKey)) {
       return injectionKey;

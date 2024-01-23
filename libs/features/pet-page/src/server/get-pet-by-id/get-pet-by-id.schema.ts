@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const paramsSchema = z.object({
-  id: z.string(),
+  id: z.string().transform(Number),
 });
 
 export type GetPetByIdParams = z.infer<typeof paramsSchema>;

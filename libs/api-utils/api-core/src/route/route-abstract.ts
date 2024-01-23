@@ -8,14 +8,8 @@ import type {
   TRouteResponse,
 } from './route.types';
 
-const baseParamSchema = z.object({
-  api: z.array(z.string()),
-});
-
-type TBaseParamSchema = z.infer<typeof baseParamSchema>;
-
 export abstract class AbstractRoute<T = unknown> implements IRoute {
-  readonly #baseParamSchema = baseParamSchema;
+  readonly #queryParamsSchema = z.array(z.string());
 
   constructor(
     protected context: TRouteContext<TRouteResponse<T>>,
@@ -36,19 +30,18 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
     return result.data;
   }
 
-  protected parseParams<Params>(schema: z.ZodType<Params>): Params {
-    const baseParamsResult = this.#baseParamSchema.safeParse(
-      this.context.request.query
-    );
+  protected parseParams<Params>(schema: z.ZodTypeAny): Params {
+    const queryWithBase = Object.entries(this.context.request.query)[0][1];
+    const query = this.#queryParamsSchema.safeParse(queryWithBase);
 
-    if (!baseParamsResult.success) {
-      throw new InternalServerError(
-        'API router is misconfigured. API handler should be configured under /api path',
-        baseParamsResult.error.flatten().fieldErrors
+    if (!query.success) {
+      throw new BadRequestError(
+        `Invalid request query`,
+        query.error.flatten().fieldErrors
       );
     }
 
-    const requestParams = this.#getParamsValue(baseParamsResult.data);
+    const requestParams = this.#getParamsValue(query.data);
     const result = schema.safeParse(requestParams);
 
     if (!result.success) {
@@ -74,10 +67,10 @@ export abstract class AbstractRoute<T = unknown> implements IRoute {
     return result.data;
   }
 
-  #getParamsValue = (params: TBaseParamSchema) => {
+  #getParamsValue = (params: string[]) => {
     const { paramName, paramPosition } = this.#getParamsMeta(this.injectionKey);
 
-    const param = { [paramName]: params.api[paramPosition] };
+    const param = { [paramName]: params[paramPosition] };
     return param;
   };
 

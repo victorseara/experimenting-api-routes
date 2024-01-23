@@ -7,12 +7,11 @@ import { InjectionKeys } from '@self/api/server';
 import { TPetStore } from '@self/open-api';
 import { inject, injectable } from 'tsyringe';
 import { GetPetByIdConfig } from './get-pet-by-id.config';
-import { GetPetByIdResponse, paramsSchema } from './get-pet-by-id.schema';
-import { GetPetByIdClient } from './get-pet-by-id.client';
-
-const container = new TestContainer();
-
-container.register();
+import {
+  GetPetByIdParams,
+  GetPetByIdResponse,
+  paramsSchema,
+} from './get-pet-by-id.schema';
 
 @injectable()
 export class GetPetByIdRoute extends AbstractRoute<GetPetByIdResponse> {
@@ -25,10 +24,10 @@ export class GetPetByIdRoute extends AbstractRoute<GetPetByIdResponse> {
     super(context, GetPetByIdConfig.injectionKey);
   }
   handler: TRouteHandler = async () => {
-    const { id } = this.parseParams(paramsSchema);
+    const { id } = this.parseParams<GetPetByIdParams>(paramsSchema);
     const petStoreClient = await this.petStoreAdapter.getClient();
 
-    const response = await petStoreClient.getPetById({ petId: parseInt(id) });
+    const response = await petStoreClient.getPetById({ petId: id });
 
     const result: GetPetByIdResponse = {
       id: response.data.id,

@@ -2,7 +2,7 @@ import OpenAPIClientAxios, { AxiosInstance } from 'openapi-client-axios';
 import type { IOpenApiAbstract, TOpenApiDefinition } from './open-api.types';
 import { ErrorFactory, ILogger } from '../server';
 
-export abstract class OpenApiAbstract<ClientType extends AxiosInstance>
+export abstract class AbstractOpenApi<ClientType extends AxiosInstance>
   implements IOpenApiAbstract<ClientType>
 {
   protected api: OpenAPIClientAxios;

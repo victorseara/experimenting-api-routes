@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { LevelWithSilent } from 'pino';
-import type { IAbstractRouteImplementation } from '../route/route-abstract';
+import type { IAbstractRouteImplementation } from '../route/abstract-route';
 import type { TRouteInjectionKey } from '../route/route.types';
 
 export type TRouteRecord = Record<

@@ -1,6 +1,6 @@
 import {
   IApiLogger,
-  OpenApiAbstract,
+  AbstractOpenApi,
   CoreInjectionKeys,
 } from '@self/api-core/server';
 import { inject, injectable } from 'tsyringe';
@@ -12,7 +12,7 @@ type ServerEnv = {
 };
 
 @injectable()
-export class PetStoreAdapter extends OpenApiAbstract<TPetStore.Client> {
+export class PetStoreAdapter extends AbstractOpenApi<TPetStore.Client> {
   constructor(
     @inject(CoreInjectionKeys.Env) env: ServerEnv,
     @inject(CoreInjectionKeys.Logger) logger: IApiLogger

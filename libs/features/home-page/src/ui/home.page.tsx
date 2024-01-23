@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useListAvailablePets } from '../wire-up/list-available-pets.query';
 
 export function HomePage() {
@@ -27,6 +28,8 @@ export function HomePage() {
             <h3>{pet.name}</h3>
             <div>{pet.images}</div>
             <div>{pet.status}</div>
+            <div>{pet.id}</div>
+            <Link href={`/pet/${pet.id}`}>See more</Link>
           </li>
         ))}
       </ul>

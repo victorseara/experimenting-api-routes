@@ -22,7 +22,9 @@
       "@self/api/server": ["libs/features/api/src/server.ts"],
       "@self/home-page": ["libs/features/home-page/src/index.ts"],
       "@self/home-page/server": ["libs/features/home-page/src/server.ts"],
-      "@self/open-api": ["libs/api-utils/open-api/src/index.ts"]
+      "@self/open-api": ["libs/api-utils/open-api/src/index.ts"],
+      "@self/pet-page": ["libs/features/pet-page/src/index.ts"],
+      "@self/pet-page/server": ["libs/features/pet-page/src/server.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

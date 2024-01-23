@@ -23,6 +23,6 @@ export type TRouteInjectionKey = z.infer<typeof routeInjectionKeySchema>;
 
 export interface IRouteConfiguration {
   method: TRouteMethod;
-  path: `/${string}`;
+  path: string;
   injectionKey: TRouteInjectionKey;
 }

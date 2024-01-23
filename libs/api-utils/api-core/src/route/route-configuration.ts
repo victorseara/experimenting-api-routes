@@ -6,8 +6,15 @@ import type {
 } from './route.types';
 
 export class RouteConfiguration implements IRouteConfiguration {
-  constructor(public method: TRouteMethod, public path: `/api/${string}`) {}
+  #path: string;
 
+  constructor(public method: TRouteMethod, path: `/api/${string}`) {
+    this.#path = path;
+  }
+
+  get path() {
+    return this.#path.replace(/\/:[^/]+/g, '');
+  }
   get injectionKey(): TRouteInjectionKey {
     const injectionKey = `${this.method} ${this.path}`;
 

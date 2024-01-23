@@ -2,7 +2,6 @@ import { ApiContainer } from '../api-container/api-container';
 import type { IApiContainer } from '../api-container/api-container.types';
 import { ErrorFactory } from '../errors/error-factory';
 import { RouteDiscover } from '../route-discover/route-discover';
-import { IRouteDiscover } from '../route-discover/route-discover.types';
 import type {
   IRouter,
   TRouteHandlerContext,

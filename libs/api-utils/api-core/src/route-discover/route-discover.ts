@@ -10,7 +10,7 @@ import type { IRouteDiscover } from './route-discover.types';
 
 export class RouteDiscover implements IRouteDiscover {
   constructor(
-    private readonly config: TRouterConfiguration['routes'],
+    private readonly routes: TRouterConfiguration['routes'],
     private readonly request: TRouteHandlerContext['request']
   ) {}
 
@@ -34,7 +34,7 @@ export class RouteDiscover implements IRouteDiscover {
 
     const injectionKey = this.#getInjectionKey(
       requestedPath,
-      Object.keys(this.config.routes)
+      Object.keys(this.routes)
     );
 
     if (!container.isRegistered(injectionKey)) {

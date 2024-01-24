@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { inject, injectable } from 'tsyringe';
 import { ApiContainer } from '../api-container/api-container';
 import { Container } from '../container/container';

@@ -26,7 +26,7 @@ export class Router implements IRouter {
       const apiError = ErrorFactory.create(error);
       response.status(apiError.statusCode).json(apiError);
     } finally {
-      this.#container.current.dispose();
+      this.#container.dispose();
     }
   };
 

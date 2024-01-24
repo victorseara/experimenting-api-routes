@@ -1,242 +1,125 @@
-import { AbstractRoute } from '../route/route-abstract';
-import { Router } from './router';
-import nodeMocksHttp from 'node-mocks-http';
-import { NextApiRequest, NextApiResponse } from 'next';
-import { TRouteContext, TRouteHandler } from '../route/route.types';
 import { inject, injectable } from 'tsyringe';
-import { CoreInjectionKeys } from '../core-injection-keys';
+import { ApiContainer } from '../api-container/api-container';
 import { Container } from '../container/container';
+import { CoreInjectionKeys } from '../core-injection-keys';
+import { RouteDiscover } from '../route-discover/route-discover';
+import { AbstractRoute } from '../route/abstract-route';
+import { RouteConfiguration } from '../route/route-configuration';
+import { NotFoundError, TRouteContext } from '../server';
+import { Router } from './router';
+import { createMockedHttpContext } from '../test-utils/api-test-utils';
 
-const mockHandler = jest.fn(() => Promise.resolve());
-const mockAuthHandler = jest.fn(() => Promise.resolve());
+const mockRouteHandler = jest.fn();
+const MockRouteConfig = new RouteConfiguration('GET', '/test');
 
 @injectable()
 class MockRoute extends AbstractRoute<unknown> {
   constructor(
     @inject(CoreInjectionKeys.RequestContext) context: TRouteContext<unknown>
   ) {
-    super(context);
+    super(context, MockRouteConfig.injectionKey);
   }
-
-  handler: TRouteHandler = mockHandler;
+  handler = mockRouteHandler;
 }
 
-@injectable()
-class MockAuthRoute extends AbstractRoute<unknown> {
-  constructor(
-    @inject(CoreInjectionKeys.RequestContext) context: TRouteContext<unknown>
-  ) {
-    super(context);
-  }
-
-  handler: TRouteHandler = mockAuthHandler;
-}
-
-describe('Router test', () => {
-  test('handle a request to a valid route', async () => {
-    const router = new Router({
-      routes: { 'GET /test': MockRoute },
-    });
-
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test',
-      });
-
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
-
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
+describe('Router class', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  test('handle a request with params', async () => {
-    const router = new Router({
-      routes: { 'GET /test/:id': MockRoute },
-    });
-
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test/1',
-      });
-
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
-
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
-  test('dispose the container after the request is handled', async () => {
-    const spyOnDispose = jest.spyOn(Container.prototype, 'dispose');
+  test('should initialize the container and add request context on handler call', async () => {
+    const { req, res } = createMockedHttpContext('GET', MockRouteConfig.path);
+
+    const spyOnApiContainerInitialize = jest.spyOn(
+      ApiContainer.prototype,
+      'initialize'
+    );
+
+    const spyOnApiContainerAddRequestContext = jest.spyOn(
+      ApiContainer.prototype,
+      'addRequestContext'
+    );
 
     const router = new Router({
-      routes: { 'GET /test': MockRoute },
+      routes: { [MockRouteConfig.injectionKey]: MockRoute },
     });
 
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test',
-      });
+    await router.handler(req, res);
 
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
-
-    await router.handler({
+    expect(spyOnApiContainerInitialize).toHaveBeenCalledTimes(1);
+    expect(spyOnApiContainerAddRequestContext).toHaveBeenCalledTimes(1);
+    expect(spyOnApiContainerAddRequestContext).toHaveBeenCalledWith({
       request: req,
       response: res,
     });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
-    expect(spyOnDispose).toHaveBeenCalled();
   });
 
-  test("should return error if the route doesn't exist", async () => {
+  test("should call route discover's execute method with the current container", async () => {
+    const { req, res } = createMockedHttpContext('GET', MockRouteConfig.path);
+
+    const spyOnRouteDiscoverExecute = jest.spyOn(
+      RouteDiscover.prototype,
+      'execute'
+    );
+
     const router = new Router({
-      routes: { 'GET /test': MockRoute },
+      routes: { [MockRouteConfig.injectionKey]: MockRoute },
     });
 
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test2',
-      });
+    await router.handler(req, res);
 
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(res.statusCode).toBe(500);
+    expect(spyOnRouteDiscoverExecute).toHaveBeenCalledTimes(1);
+    expect(spyOnRouteDiscoverExecute).toHaveBeenCalledWith(
+      expect.any(Container)
+    );
   });
 
-  test('should return error if request is invalid', async () => {
+  test("should handle a request and call the route's handler", async () => {
+    const { req, res } = createMockedHttpContext('GET', MockRouteConfig.path);
+
     const router = new Router({
-      routes: { 'GET /test': MockRoute },
+      routes: { [MockRouteConfig.injectionKey]: MockRoute },
     });
 
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({});
-
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(res.statusCode).toBe(500);
+    await router.handler(req, res);
+    expect(mockRouteHandler).toHaveBeenCalledTimes(1);
   });
 
-  test('should handle requests with query params', async () => {
+  test('should handle errors and return the appropriate response', async () => {
+    const { req, res } = createMockedHttpContext('GET', MockRouteConfig.path);
+
     const router = new Router({
-      routes: { 'GET /test': MockRoute },
+      routes: { [MockRouteConfig.injectionKey]: MockRoute },
     });
 
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test?test=1',
-      });
+    const error = new NotFoundError('Test Error');
+    mockRouteHandler.mockImplementationOnce(() => Promise.reject(error));
+    res.json = jest.fn();
 
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
+    await router.handler(req, res);
 
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(error.statusCode);
+    expect(res.json).toHaveBeenCalledWith(error);
   });
 
-  test('should handle requests with query params and path params', async () => {
+  test('should dispose the container after the request is handled', async () => {
+    const { req, res } = createMockedHttpContext('GET', MockRouteConfig.path);
+
     const router = new Router({
-      routes: { 'GET /test/:id': MockRoute },
+      routes: { [MockRouteConfig.injectionKey]: MockRoute },
     });
 
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test/1?test=1',
-      });
+    const spyOnApiContainerDispose = jest.spyOn(
+      ApiContainer.prototype,
+      'dispose'
+    );
 
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
+    await router.handler(req, res);
 
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
-  });
-
-  test('should handle nested routes', async () => {
-    const router = new Router({
-      routes: { 'GET /': MockRoute, 'GET /test/:id/nested': MockRoute },
-    });
-
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'GET',
-        url: '/test/1/nested',
-      });
-
-    mockHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
-
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
-  });
-
-  test('should redirect to the auth if its an authentication related route', async () => {
-    const router = new Router({
-      routes: { 'GET /': MockRoute },
-      auth: MockAuthRoute,
-    });
-
-    const { req, res }: { req: NextApiRequest; res: NextApiResponse } =
-      nodeMocksHttp.createMocks({
-        method: 'POST',
-        url: '/auth/any',
-      });
-
-    mockAuthHandler.mockImplementationOnce(async () => {
-      res.status(200).end();
-    });
-
-    await router.handler({
-      request: req,
-      response: res,
-    });
-
-    expect(mockHandler).toHaveBeenCalled();
-    expect(res.statusCode).toBe(200);
+    expect(spyOnApiContainerDispose).toHaveBeenCalledTimes(1);
   });
 });

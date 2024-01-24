@@ -64,4 +64,8 @@ export class ApiContainer implements IApiContainer {
   addRequestContext(context: TRouteHandlerContext) {
     this.#container?.registerValue(CoreInjectionKeys.RequestContext, context);
   }
+
+  dispose() {
+    this.#container?.dispose();
+  }
 }

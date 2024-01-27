@@ -21,42 +21,53 @@ export class ApiContainer implements IApiContainer {
   }
 
   initialize() {
-    this.#container = new Container();
+    const container = new Container();
     const routes = Object.entries(this.config.routes);
 
     routes.forEach(([key, value]) => {
-      this.#container?.registerClass(key, value);
+      container.registerClass(key, value);
     });
 
-    this.#container.registerValue(
+    container.registerValue(
       CoreInjectionKeys.BasePath,
       this.config.basePath ?? '/api'
     );
-    this.#container?.registerValue(CoreInjectionKeys.Env, process.env);
+    container.registerValue(CoreInjectionKeys.Env, process.env);
 
     if (this.config.auth) {
-      this.#container?.registerClass(CoreInjectionKeys.Auth, this.config.auth);
+      container.registerClass(CoreInjectionKeys.Auth, this.config.auth);
     }
 
-    this.#container?.registerValue(
+    container.registerValue(
       CoreInjectionKeys.LogLevel,
       this.config.log ?? 'silent'
     );
 
-    this.#container?.registerClass<IApiLogger>(
-      CoreInjectionKeys.Logger,
-      ApiLogger
-    );
+    container.registerClass<IApiLogger>(CoreInjectionKeys.Logger, ApiLogger);
 
     if (this.config.openApi) {
       this.config.openApi.forEach((adapter) =>
-        this.#container?.registerClass(adapter.name, adapter)
+        container.registerClass(adapter.name, adapter)
       );
     }
 
-    if (this.config.dependencies) {
-      this.config.dependencies(this);
+    if (this.config.operations) {
+      this.config.operations.forEach((operation) => {
+        container.registerClass(operation.name, operation);
+      });
     }
+
+    if (this.config.services) {
+      this.config.services.forEach((service) => {
+        container.registerClass(service.name, service);
+      });
+    }
+
+    if (this.config.dependencies) {
+      this.config.dependencies(container);
+    }
+
+    this.#container = container;
   }
 
   addRequestContext(context: TRouteHandlerContext) {

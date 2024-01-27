@@ -1,12 +1,10 @@
 import {
   AbstractRoute,
   CoreInjectionKeys,
-  IOpenApiAbstractImplementation,
   TRouteContext,
   TRouteHandler,
 } from '@self/api-core/server';
-import { InjectionKeys } from '@self/api/server';
-import { PetStoreAdapter, TPetStore } from '@self/open-api';
+import { PetStoreAdapter } from '@self/open-api';
 import { inject, injectable } from 'tsyringe';
 import { ListAvailablePetsConfig } from './list-available-pets.config';
 import { AvailablePetsResponse } from './list-available-pets.schema';

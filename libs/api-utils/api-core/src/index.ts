@@ -7,3 +7,4 @@ export type * from './api-client/api-client.types';
 
 export * from './errors/api-errors';
 export * from './errors/error-factory';
+export * from './operations/operation.types';

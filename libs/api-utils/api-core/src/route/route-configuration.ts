@@ -1,3 +1,4 @@
+import { InternalServerError } from '../errors/api-errors';
 import { routeInjectionKeySchema } from './route.schemas';
 import type {
   IRouteConfiguration,
@@ -23,7 +24,7 @@ export class RouteConfiguration implements IRouteConfiguration {
       return injectionKey;
     }
 
-    throw new Error(`Invalid injection key: ${injectionKey}`);
+    throw new InternalServerError(`Invalid injection key: ${injectionKey}`);
   }
 
   #isInjectionKey(key: string): key is TRouteInjectionKey {

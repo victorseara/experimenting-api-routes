@@ -23,7 +23,7 @@ class MockRoute extends AbstractRoute<unknown> {
   handler = mockRouteHandler;
 }
 
-describe('Router class', () => {
+describe('Router', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });

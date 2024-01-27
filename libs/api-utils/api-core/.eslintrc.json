@@ -13,6 +13,13 @@
     {
       "files": ["*.js", "*.jsx"],
       "rules": {}
+    },
+    {
+      "files": ["**/*.test.ts", "**/*.test.js"], // adjust this to match your test files
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": "off",
+        "@typescript-eslint/no-explicit-any": "off"
+      }
     }
   ]
 }

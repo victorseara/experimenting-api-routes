@@ -8,15 +8,10 @@ export type TRouteRecord = Record<
   IAbstractRouteImplementation
 >;
 
-export type TOpenApiRecord = Record<
-  string,
-  IOpenApiAbstractImplementation<any>
->;
-
 export type TRouterConfiguration = {
   basePath?: string;
   routes: TRouteRecord;
-  openApi?: TOpenApiRecord;
+  openApi?: IOpenApiAbstractImplementation[];
   auth?: IAbstractRouteImplementation;
   log?: LevelWithSilent;
   dependencies?: (container: IContainer) => void | Promise<void>;

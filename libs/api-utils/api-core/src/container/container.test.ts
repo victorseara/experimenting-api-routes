@@ -60,6 +60,11 @@ describe('Container test', () => {
     expect(container.isRegistered(notRegisteredToken)).toBeFalsy();
   });
 
+  test('should return false if token is not provided to isRegistered method', () => {
+    const container = new Container();
+    expect(container.isRegistered()).toBeFalsy();
+  });
+
   test('should dispose the container', () => {
     const container = new Container();
 

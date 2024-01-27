@@ -4,7 +4,7 @@ import {
   IOpenApiAbstractImplementation,
 } from '@self/api-core/server';
 import { InjectionKeys } from '@self/api/server';
-import { TPetStore } from '@self/open-api';
+import { PetStoreAdapter, TPetStore } from '@self/open-api';
 import { inject, injectable } from 'tsyringe';
 import { GetPetByIdConfig } from './get-pet-by-id.config';
 import {
@@ -20,8 +20,8 @@ export class GetPetByIdRoute extends AbstractRoute<GetPetByIdResponse> {
     context: TRouteContext,
     @inject(CoreInjectionKeys.BasePath)
     basePath: string,
-    @inject(InjectionKeys.PetStoreAdapter)
-    private petStoreAdapter: IOpenApiAbstractImplementation<TPetStore.Client>
+    @inject(PetStoreAdapter.name)
+    private petStoreAdapter: PetStoreAdapter
   ) {
     super(context, GetPetByIdConfig.injectionKey, basePath);
   }

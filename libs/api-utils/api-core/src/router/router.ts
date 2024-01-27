@@ -18,7 +18,7 @@ export class Router implements IRouter {
 
   handler: TRouterHandler = async (request, response) => {
     try {
-      await this.#initializeHandler({ request, response });
+      this.#initializeHandler({ request, response });
       const routeDiscover = new RouteDiscover(this.config.routes, request);
       const routeHandler = routeDiscover.execute(this.#container.current);
       await routeHandler.handler();
@@ -30,8 +30,8 @@ export class Router implements IRouter {
     }
   };
 
-  async #initializeHandler(context: TRouteHandlerContext) {
-    await this.#container.initialize();
+  #initializeHandler(context: TRouteHandlerContext) {
+    this.#container.initialize();
     this.#container.addRequestContext(context);
   }
 }

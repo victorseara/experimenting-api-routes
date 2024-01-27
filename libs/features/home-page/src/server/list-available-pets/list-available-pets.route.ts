@@ -6,10 +6,10 @@ import {
   TRouteHandler,
 } from '@self/api-core/server';
 import { InjectionKeys } from '@self/api/server';
-import { TPetStore } from '@self/open-api';
+import { PetStoreAdapter, TPetStore } from '@self/open-api';
 import { inject, injectable } from 'tsyringe';
-import { AvailablePetsResponse } from './list-available-pets.schema';
 import { ListAvailablePetsConfig } from './list-available-pets.config';
+import { AvailablePetsResponse } from './list-available-pets.schema';
 
 export interface IMyOperation {
   execute(): void;
@@ -22,8 +22,8 @@ export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
     context: TRouteContext,
     @inject(CoreInjectionKeys.BasePath)
     basePath: string,
-    @inject(InjectionKeys.PetStoreAdapter)
-    private petStoreAdapter: IOpenApiAbstractImplementation<TPetStore.Client>
+    @inject(PetStoreAdapter.name)
+    private petStoreAdapter: PetStoreAdapter
   ) {
     super(context, ListAvailablePetsConfig.injectionKey, basePath);
   }

@@ -1,7 +1,7 @@
 import { IContainer } from '../container/container.types';
 
 export interface IApiContainer {
-  initialize(): Promise<void>;
+  initialize(): void;
   addRequestContext(context: TRouteHandlerContext): void;
   current: IContainer;
   dispose(): void;

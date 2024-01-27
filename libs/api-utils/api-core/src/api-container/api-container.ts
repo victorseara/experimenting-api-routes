@@ -20,7 +20,7 @@ export class ApiContainer implements IApiContainer {
     return this.#container;
   }
 
-  async initialize() {
+  initialize() {
     this.#container = new Container();
     const routes = Object.entries(this.config.routes);
 
@@ -49,15 +49,13 @@ export class ApiContainer implements IApiContainer {
     );
 
     if (this.config.openApi) {
-      const openApi = Object.entries(this.config.openApi);
-
-      openApi.forEach(([key, value]) =>
-        this.#container?.registerOpenApiAdapter(key, value)
+      this.config.openApi.forEach((adapter) =>
+        this.#container?.registerClass(adapter.name, adapter)
       );
     }
 
     if (this.config.dependencies) {
-      await this.config.dependencies(this);
+      this.config.dependencies(this);
     }
   }
 

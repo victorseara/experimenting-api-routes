@@ -1,5 +1,4 @@
 import { Router } from '@self/api-core/server';
-import { InjectionKeys } from '@self/api/server';
 import {
   ListAvailablePets,
   ListAvailablePetsConfig,
@@ -13,9 +12,7 @@ const apiRouter = new Router({
     [ListAvailablePetsConfig.injectionKey]: ListAvailablePets,
     [GetPetByIdConfig.injectionKey]: GetPetByIdRoute,
   },
-  openApi: {
-    [InjectionKeys.PetStoreAdapter]: PetStoreAdapter,
-  },
+  openApi: [PetStoreAdapter],
 });
 
 export default apiRouter.handler;

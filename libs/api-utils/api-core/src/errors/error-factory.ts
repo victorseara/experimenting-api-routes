@@ -38,10 +38,14 @@ export class ErrorFactory {
     }
 
     if (error instanceof Error) {
-      return new InternalServerError('Unhandled error');
+      return new InternalServerError('Unhandled error', {
+        reason: error.message,
+      });
     }
 
-    return new InternalServerError('Unexpected error');
+    return new InternalServerError('Unexpected error', {
+      reason: JSON.stringify(error),
+    });
   }
 
   private static parseAxiosErrorToBaseApiError(error: AxiosError) {

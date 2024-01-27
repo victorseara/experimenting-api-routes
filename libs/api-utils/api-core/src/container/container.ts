@@ -41,7 +41,16 @@ export class Container implements IContainer {
   }
 
   resolve<T>(token: string): T {
-    return this.#container.resolve<T>(token);
+    try {
+      return this.#container.resolve<T>(token);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(
+          `${Container.name} failed to resolve ${token}: ${error.message}`
+        );
+      }
+      throw new Error(`${Container.name}: failed to resolve ${token}`);
+    }
   }
 
   dispose(): void {

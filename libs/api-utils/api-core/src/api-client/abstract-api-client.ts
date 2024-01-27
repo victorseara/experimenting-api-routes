@@ -1,7 +1,7 @@
 import type { IHttpClient, SSRRequest } from './api-client.types';
 import { HttpClient } from './http-client';
 
-export abstract class AbstractApiClient<Input, Output> {
+export abstract class AbstractApiClient<Output, Input = undefined> {
   protected client: IHttpClient;
 
   constructor(client?: IHttpClient, ssrRequest?: SSRRequest) {

@@ -1,4 +1,4 @@
-import { AbstractRoute, TRouteContext, TRouteHandler } from '@self/api-core';
+import { BaseRoute, TRouteContext, TRouteHandler } from '@self/api-core';
 import { CoreInjectionKeys } from '@self/api-core/server';
 import { PetStoreAdapter } from '@self/open-api';
 import { inject, injectable } from 'tsyringe';
@@ -10,7 +10,7 @@ import {
 } from './get-pet-by-id.schema';
 
 @injectable()
-export class GetPetByIdRoute extends AbstractRoute<GetPetByIdResponse> {
+export class GetPetByIdRoute extends BaseRoute<GetPetByIdResponse> {
   constructor(
     @inject(CoreInjectionKeys.RequestContext)
     context: TRouteContext,

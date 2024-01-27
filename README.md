@@ -41,3 +41,12 @@
       - get-[feature-name].test
 - Route generator should add an entry to the server.ts and register the route in the api
 - Feature generator should register the generated route in the api and the generated page in the selected app;
+
+## Creating a page
+
+1. Create a nextjs library
+2. Delete lib folder
+3. Create dirs ui, server, hooks
+4. Create ui/libname.page.tsx
+5. Export page from index.tsx
+6. 

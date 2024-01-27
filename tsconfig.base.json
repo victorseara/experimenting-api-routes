@@ -21,6 +21,8 @@
       "@self/api-core/server": ["libs/api-utils/api-core/src/server.ts"],
       "@self/api/server": ["libs/features/api/src/server.ts"],
       "@self/home-page": ["libs/features/home-page/src/index.ts"],
+      "@self/home-page-final": ["libs/pages/home-page/src/index.ts"],
+      "@self/home-page-final/server": ["libs/pages/home-page/src/server.ts"],
       "@self/home-page/server": ["libs/features/home-page/src/server.ts"],
       "@self/open-api": ["libs/api-utils/open-api/src/index.ts"],
       "@self/pet-page": ["libs/features/pet-page/src/index.ts"],

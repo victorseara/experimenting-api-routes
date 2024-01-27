@@ -1,5 +1,5 @@
 import {
-  AbstractRoute,
+  BaseRoute,
   CoreInjectionKeys,
   TRouteContext,
   TRouteHandler,
@@ -14,7 +14,7 @@ export interface IMyOperation {
 }
 
 @injectable()
-export class ListAvailablePets extends AbstractRoute<AvailablePetsResponse> {
+export class ListAvailablePets extends BaseRoute {
   constructor(
     @inject(CoreInjectionKeys.RequestContext)
     context: TRouteContext,

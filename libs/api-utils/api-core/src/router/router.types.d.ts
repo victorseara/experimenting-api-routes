@@ -3,7 +3,7 @@ import type { LevelWithSilent } from 'pino';
 import type { IAbstractRouteImplementation } from '../route/abstract-route';
 import type { TRouteInjectionKey } from '../route/route.types';
 import type { IServiceImplementation } from '../services/services.types';
-import type { IOperationImplementation } from '../operations/operation.types';
+import type { IOperationImplementation } from '../operations/operations.types';
 
 export type TRouteRecord = Record<
   TRouteInjectionKey,

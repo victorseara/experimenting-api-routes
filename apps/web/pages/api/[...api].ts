@@ -1,18 +1,16 @@
 import { Router } from '@self/api-core/server';
 import {
-  ListAvailablePets,
-  ListAvailablePetsConfig,
-} from '@self/home-page/server';
-import { PetStoreAdapter } from '@self/open-api';
-import { GetPetByIdConfig, GetPetByIdRoute } from '@self/pet-page/server';
+  GetHomeDataConfig,
+  GetHomeDataRoute,
+  GetHomeDataService,
+} from '@self/home-page-final/server';
 
 const apiRouter = new Router({
   log: 'info',
   routes: {
-    [ListAvailablePetsConfig.injectionKey]: ListAvailablePets,
-    [GetPetByIdConfig.injectionKey]: GetPetByIdRoute,
+    [GetHomeDataConfig.injectionKey]: GetHomeDataRoute,
   },
-  openApi: [PetStoreAdapter],
+  services: [GetHomeDataService],
 });
 
 export default apiRouter.handler;

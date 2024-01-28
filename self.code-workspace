@@ -21,6 +21,10 @@
       "path": "./libs/features/pet-page"
     },
     {
+      "name": "home-page-final",
+      "path": "./libs/pages/home-page"
+    },
+    {
       "name": "api-core",
       "path": "./libs/api-utils/api-core"
     },

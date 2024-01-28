@@ -18,5 +18,10 @@ export default {
     ],
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+  collectCoverageFrom: [
+    '**/*.{ts,tsx}',
+    '!**/node_modules/**',
+    '!**/vendor/**',
+  ],
   coverageDirectory: '../../../coverage/libs/api-utils/api-core',
 };

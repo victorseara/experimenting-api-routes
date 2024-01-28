@@ -30,11 +30,12 @@ describe('ApiContainer', () => {
   it('should initialize the container', () => {
     const registerClassSpy = jest.spyOn(Container.prototype, 'registerClass');
     const registerValueSpy = jest.spyOn(Container.prototype, 'registerValue');
+
     apiContainer.initialize();
 
     expect(registerClassSpy).toHaveBeenCalledTimes(6);
     expect(registerValueSpy).toHaveBeenCalledTimes(3);
-    expect(config.dependencies).toHaveBeenCalledWith(apiContainer);
+    expect(config.dependencies).toHaveBeenCalledWith(apiContainer.current);
   });
 
   it('should add request context', () => {

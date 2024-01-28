@@ -6,13 +6,32 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "",
+      "description": "What the name of the page you want to create?",
       "$default": {
         "$source": "argv",
         "index": 0
       },
-      "x-prompt": "What name would you like to use?"
+      "x-prompt": "What name would you like to use?",
+      "x-priority": "important"
+    },
+    "route": {
+      "type": "string",
+      "description": "Specify the route path without the file extension",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Specify the route path without the file extension"
+    },
+    "api": {
+      "type": "string",
+      "description": "Specify the api path to register the page route",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Specify the api path to register the page route"
     }
   },
-  "required": ["name"]
+  "required": ["name", "route", "api"]
 }

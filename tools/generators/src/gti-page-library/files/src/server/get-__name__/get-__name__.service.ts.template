@@ -1,10 +1,10 @@
 import { TService } from '@self/api-core';
-import { TGet<%= camelCase(name) %>Response } from './get-<%= name %>.schema';
+import { TGet<%= pascalCase(name) %>Response } from './get-<%= name %>.schema';
 import { injectable } from 'tsyringe';
 
 @injectable()
-export class Get<%= camelCase(name) %>Service
-  implements TService<undefined, TGet<%= camelCase(name) %>Response>
+export class Get<%= pascalCase(name) %>Service
+  implements TService<undefined, TGet<%= pascalCase(name) %>Response>
 {
   execute() {
     return Promise.resolve({

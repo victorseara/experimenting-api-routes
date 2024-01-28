@@ -1,11 +1,11 @@
 import { AbstractApiClient } from '@self/api-core';
-import { Get<%= camelCase(name) %>Config } from '../<%= name %>-api-config';
-import { TGet<%= camelCase(name) %>Response } from './get-<%= name %>.schema';
+import { Get<%= pascalCase(name) %>Config } from '../<%= name %>-api.config';
+import { TGet<%= pascalCase(name) %>Response } from './get-<%= name %>.schema';
 
-export class Get<%= camelCase(name)%>Client extends AbstractApiClient<TGet<%= camelCase(name)%>Response> {
+export class Get<%= pascalCase(name)%>Client extends AbstractApiClient<TGet<%= pascalCase(name)%>Response> {
   async execute() {
-    const response = await this.client.get<TGet<%= camelCase(name)%>Response>(
-      Get<%= camelCase(name)%>Config.path
+    const response = await this.client.get<TGet<%= pascalCase(name)%>Response>(
+      Get<%= pascalCase(name)%>Config.path
     );
 
     return response.data.result;

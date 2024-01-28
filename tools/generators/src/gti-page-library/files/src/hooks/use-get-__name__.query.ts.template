@@ -1,14 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import { TGet<%= camelCase(name) %>Response } from '../server/get-<%= name %>/get-<%= name %>.schema';
-import { Get<%= camelCase(name) %>Client } from '../server/get-<%= name %>/get-<%= name %>.client';
+import { TGet<%= pascalCase(name) %>Response } from '../server/get-<%= name %>/get-<%= name %>.schema';
+import { Get<%= pascalCase(name) %>Client } from '../server/get-<%= name %>/get-<%= name %>.client';
 
-export function use<%= camelCase(name) %>Query() {
-  const [data, setData] = React.useState<TGet<%= camelCase(name) %>Response | null>(null);
+export function useGet<%= pascalCase(name) %>Query() {
+  const [data, setData] = React.useState<TGet<%= pascalCase(name) %>Response | null>(null);
 
   const httpClient = React.useMemo(() => axios.create({}), []);
   const routeClient = React.useMemo(
-    () => new Get<%= camelCase(name) %>Client(httpClient),
+    () => new Get<%= pascalCase(name) %>Client(httpClient),
     [httpClient]
   );
 

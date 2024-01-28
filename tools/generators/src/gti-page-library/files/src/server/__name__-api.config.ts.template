@@ -1,6 +1,6 @@
 import { RouteConfiguration } from '@self/api-core';
 
-export const Get<%= camelCase(name) %>Config = new RouteConfiguration(
+export const Get<%= pascalCase(name) %>Config = new RouteConfiguration(
   'GET',
   '/api/<%= name %>'
 );

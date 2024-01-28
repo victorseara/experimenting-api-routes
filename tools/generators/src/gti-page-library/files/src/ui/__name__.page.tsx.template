@@ -1,7 +1,7 @@
-import { use<%= camelCase(name) %>Query } from '../hooks/use-<%= name %>.query';
+import { useGet<%= pascalCase(name) %>Query } from '../hooks/use-get-<%= name %>.query';
 
-export function HomePage() {
-  const data = use<%= camelCase(name) %>Query();
+export function <%= pascalCase(name) %>Page() {
+  const data = useGet<%= pascalCase(name) %>Query();
 
   return (
     <div>

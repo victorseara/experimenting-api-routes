@@ -1,1 +1,3 @@
-const variable = "<%= name %>";
+export * from './server/get-<%= name %>/get-<%= name %>.route';
+export * from './server/home-api-config';
+export * from './server/get-<%= name %>/get-<%= name %>.service';

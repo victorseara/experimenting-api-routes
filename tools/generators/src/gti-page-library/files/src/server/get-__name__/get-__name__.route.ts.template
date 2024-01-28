@@ -1,0 +1,23 @@
+import { AbstractRoute, TRouteHandler } from '@self/api-core';
+import { CoreInjectionKeys, TRouteContext } from '@self/api-core/server';
+import { inject, injectable } from 'tsyringe';
+import { Get<%= camelCase(name) %>Config } from '../<%= name %>-api-config';
+import { TGet<%= camelCase(name) %>Response } from './get-<%= name %>.schema';
+import { Get<%= camelCase(name) %>Service } from './get-<%= name %>.service';
+
+@injectable()
+export class Get<%= camelCase(name) %>Route extends AbstractRoute<TGet<%= camelCase(name) %>Response> {
+  constructor(
+    @inject(CoreInjectionKeys.RequestContext)
+    context: TRouteContext,
+    @inject(CoreInjectionKeys.BasePath)
+    basePath: string,
+    @inject(Get<%= camelCase(name) %>Service.name) private service: Get<%= camelCase(name) %>Service
+  ) {
+    super(context, Get<%= camelCase(name) %>Config.injectionKey, basePath);
+  }
+  handler: TRouteHandler = async () => {
+    const result = await this.service.execute();
+    this.context.response.status(200).json({ result });
+  };
+}

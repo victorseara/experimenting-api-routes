@@ -1,1 +1,6 @@
-const variable = "<%= name %>";
+import { RouteConfiguration } from '@self/api-core';
+
+export const Get<%= camelCase(name) %>Config = new RouteConfiguration(
+  'GET',
+  '/api/<%= name %>'
+);

@@ -1,1 +1,12 @@
-const variable = '<%= name %>';
+import { use<%= camelCase(name) %>Query } from '../hooks/use-<%= name %>.query';
+
+export function HomePage() {
+  const data = use<%= camelCase(name) %>Query();
+
+  return (
+    <div>
+      <h1>Welcome</h1>
+      <div>{JSON.stringify(data)}</div>
+    </div>
+  );
+}

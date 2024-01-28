@@ -1,29 +1,11 @@
-import {
-  Tree,
-  formatFiles,
-  generateFiles,
-  readProjectConfiguration,
-} from '@nx/devkit';
+import { Tree, formatFiles, generateFiles } from '@nx/devkit';
 import { libraryGenerator } from '@nx/next';
-import { GtiPageLibraryGeneratorSchema } from './schema';
-import path from 'path';
 import camelCase from 'lodash.camelcase';
+import path from 'path';
+import { GtiPageLibraryGeneratorSchema } from './schema';
 
 function pascalCase(val: string) {
   return val[0].toUpperCase() + camelCase(val).slice(1);
-}
-
-function getApplications(workspace: any) {
-  const items = [];
-  for (const project of workspace.projects) {
-    if (project.projectType === 'application') {
-      items.push({
-        value: project.name,
-        label: project.displayName || project.name,
-      });
-    }
-  }
-  return items;
 }
 
 export async function gtiPageLibraryGenerator(
@@ -52,7 +34,7 @@ export async function gtiPageLibraryGenerator(
 
   tree.write(
     `${options.route}.tsx`,
-    `export default { ${pascalCase(options.name)}Page } from '@self/pages/${
+    `export { ${pascalCase(options.name)}Page as default } from '@self/pages/${
       options.name
     }';\n export {${camelCase(
       options.name

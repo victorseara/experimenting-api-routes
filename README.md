@@ -1,22 +1,21 @@
 # Development progress
 
-- [ ] Develop test strategy for Api Routes;
+- [x] Develop test strategy for Api Routes;
 - [ ] Implements multipart form data in Abstract Route;
-- [ ] Test Core lib;
-- [ ] Create operation interface;
-- [ ] Create snippets:
-  - [ ] Injecting Core dependencies;
-  - [ ] Create route;
-  - [ ] Create client;
-  - [ ] Create config;
+- [x] Test Core lib;
+- [x] Create operation interface;
+- [x] Create snippets:
+  - [x] Injecting Core dependencies;
+  - [x] Create route;
+  - [x] Create client;
+  - [x] Create config;
   - [ ] Create query;
   - [ ] Create prefetchQuery;
   - [ ] Create mutation;
-  - [ ] Create params schema + type;
-  - [ ] Create body schema + type;
-  - [ ] Create response type;
+  - [x] Create params schema + type;
+  - [x] Create body schema + type;
+  - [x] Create response type;
   - [ ] Create operation;
-  - [ ] Inject open api adapter;
 - [ ] Create generator:
   - feature generator
     - [feature-name] -> dir
@@ -49,4 +48,4 @@
 3. Create dirs ui, server, hooks
 4. Create ui/libname.page.tsx
 5. Export page from index.tsx
-6. 
+6.

@@ -10,3 +10,9 @@ export function <%= pascalCase(name) %>Page() {
     </div>
   );
 }
+
+export const <%= camelCase(name) %>SsrProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {},
+  };
+};

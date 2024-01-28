@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { useHomeDataQuery } from '../hooks/use-home-data.query';
 
 export function HomePage() {
@@ -10,3 +11,9 @@ export function HomePage() {
     </div>
   );
 }
+
+export const homePageSsrProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {},
+  };
+};

@@ -52,18 +52,20 @@ export async function gtiPageLibraryGenerator(
 
   tree.write(
     `${options.route}.tsx`,
-    `export { ${pascalCase(options.name)}Page } from '@self/pages/${
+    `export default { ${pascalCase(options.name)}Page } from '@self/pages/${
       options.name
-    }';`
+    }';\n export {${camelCase(
+      options.name
+    )}SsrProps as getServerSideProps} from '@self/pages/${options.name}';`
   );
 
   /* @to-do use AST to modify the router properly */
-  tree.write(
+  /*   tree.write(
     `${options.api}/[...api].ts`,
     `import {Get${pascalCase(options.name)}Route} from '@self/pages/${
       options.name
     }/server'`
-  );
+  ); */
 
   await formatFiles(tree);
 }

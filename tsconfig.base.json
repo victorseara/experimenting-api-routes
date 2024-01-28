@@ -20,6 +20,7 @@
       "@self/api-core": ["libs/api-utils/api-core/src/index.ts"],
       "@self/api-core/server": ["libs/api-utils/api-core/src/server.ts"],
       "@self/api/server": ["libs/features/api/src/server.ts"],
+      "@self/gti-generators": ["tools/generators/src/index.ts"],
       "@self/home-page": ["libs/features/home-page/src/index.ts"],
       "@self/home-page-final": ["libs/pages/home-page/src/index.ts"],
       "@self/home-page-final/server": ["libs/pages/home-page/src/server.ts"],

@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "gti-page-library": {
+      "factory": "./src/gti-page-library/generator",
+      "schema": "./src/gti-page-library/schema.json",
+      "description": "Creates a new page, route and wire-up with GTi."
+    }
+  }
+}

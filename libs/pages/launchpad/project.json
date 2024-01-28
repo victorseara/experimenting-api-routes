@@ -1,0 +1,20 @@
+{
+  "name": "pages-launchpad",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/pages/launchpad/src",
+  "projectType": "library",
+  "tags": ["scope:launchpad", "type:page"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/pages/launchpad/jest.config.ts"
+      }
+    }
+  }
+}

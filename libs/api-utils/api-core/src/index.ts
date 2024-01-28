@@ -9,4 +9,3 @@ export type * from './route/route.types';
 export type * from './api-client/api-client.types';
 export type * from './operations/operations.types';
 export type * from './services/services.types';
-export * from './test-utils/api-test-utils';

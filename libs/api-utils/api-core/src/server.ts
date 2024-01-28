@@ -17,3 +17,4 @@ export * from './errors/error-factory';
 
 export * from './logger/logger';
 export type * from './logger/logger.types';
+export * from './test-utils/api-test-utils';

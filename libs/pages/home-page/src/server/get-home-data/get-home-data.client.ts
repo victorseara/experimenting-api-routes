@@ -1,6 +1,6 @@
 import { AbstractApiClient } from '@self/api-core';
 import { TGetHomeDataResponse } from './get-home-data.schema';
-import { GetHomeDataConfig } from '../di/home-api-config';
+import { GetHomeDataConfig } from '../config/home-api-config';
 
 export class GetHomeDataClient extends AbstractApiClient<TGetHomeDataResponse> {
   async execute() {

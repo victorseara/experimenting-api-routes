@@ -1,5 +1,5 @@
 import { TRouteContext, createMockedHttpContext } from '@self/api-core';
-import { GetHomeDataConfig } from '../../di/home-api-config';
+import { GetHomeDataConfig } from '../../config/home-api-config';
 import { GetHomeDataService } from '../get-home-data.service';
 import { GetHomeDataRoute } from '../get-home-data.route';
 

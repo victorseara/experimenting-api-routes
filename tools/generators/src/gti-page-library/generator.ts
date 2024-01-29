@@ -117,7 +117,7 @@ export async function gtiPageLibraryGenerator(
       );
 
       if (withImports !== content) {
-        tree.write(`${options.api}/${fileName}`, withNewServices);
+        tree.write(`${options.api}/${fileName}`, withImports);
       }
     }
   });

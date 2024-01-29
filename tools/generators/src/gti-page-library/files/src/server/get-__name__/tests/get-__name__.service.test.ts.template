@@ -1,0 +1,15 @@
+import { Get<%= pascalCase(name) %>Service } from '../get-<%= name %>.service';
+import { TGet<%= pascalCase(name) %>Response  } from '../get-<%= name %>.schema';
+
+describe('Get<%= pascalCase(name) %>Service', () => {
+  test('should execute and return a valid response', async () => {
+    const service = new GetHomeDataService();
+
+    const expectedResponse: TGet<%= pascalCase(name) %>Response  = {
+      message: 'Hello, world!',
+    };
+
+    const response = await service.execute();
+    expect(response).toEqual(expectedResponse);
+  });
+});

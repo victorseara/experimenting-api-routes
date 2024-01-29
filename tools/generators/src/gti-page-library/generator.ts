@@ -44,14 +44,6 @@ export async function gtiPageLibraryGenerator(
     )}SsrProps as getServerSideProps} from '@self/pages/${options.name}';`
   );
 
-  /* @to-do use AST to modify the router properly */
-  /*   tree.write(
-    `${options.api}/[...api].ts`,
-    `import {Get${pascalCase(options.name)}Route} from '@self/pages/${
-      options.name
-    }/server'`
-  ); */
-
   function registerRoute(node: ts.Node) {
     const text = node.getText();
     const entries = text
@@ -84,6 +76,18 @@ export async function gtiPageLibraryGenerator(
     return node.getText();
   }
 
+  function addImports(node: ts.Node) {
+    const text = node.getText();
+
+    const newEntry = `import { Get${pascalCase(
+      options.name
+    )}Config, Get${pascalCase(options.name)}Route, Get${pascalCase(
+      options.name
+    )}Service } from '@self/pages/${options.name}/server';`;
+
+    return text.concat('\n', newEntry);
+  }
+
   tree.children(`${options.api}`).forEach((fileName) => {
     if (fileName === '[...api].ts') {
       const content = tree.read(`${options.api}/${fileName}`).toString();
@@ -103,17 +107,7 @@ export async function gtiPageLibraryGenerator(
       const withImports = tsquery.replace(
         withNewServices,
         'ImportDeclaration:nth-last-child(3)',
-        (node) => {
-          const text = node.getText();
-
-          const newEntry = `import { Get${pascalCase(
-            options.name
-          )}Config, Get${pascalCase(options.name)}Route, Get${pascalCase(
-            options.name
-          )}Service } from '@self/pages/${options.name}/server';`;
-
-          return text.concat('\n', newEntry);
-        }
+        addImports
       );
 
       if (withImports !== content) {

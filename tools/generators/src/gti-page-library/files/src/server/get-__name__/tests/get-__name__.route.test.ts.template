@@ -1,0 +1,42 @@
+import { TRouteContext, createMockedHttpContext } from '@self/api-core/server';
+import { Get<%= pascalCase(name) %>Config } from '../../<%= name %>-api.config';
+import { Get<%= pascalCase(name) %>Service } from '../get-<%= name %>.service';
+import { Get<%= pascalCase(name) %>Route } from '../get-home-data.route';
+
+describe('Get<%= pascalCase(name) %>Route', () => {
+  let mockContext: TRouteContext;
+  let mockService: jest.Mocked<Get<%= pascalCase(name) %>Service>;
+
+  beforeEach(() => {
+    const { req, res } = createMockedHttpContext(
+      Get<%= pascalCase(name) %>Config.method,
+      Get<%= pascalCase(name) %>Config.path
+    );
+
+    mockContext = { request: req, response: res };
+
+    mockService = {
+      execute: jest.fn(),
+    };
+  });
+
+  test('should call the service and return its response', async () => {
+    const route = new Get<%= pascalCase(name) %>Route(mockContext, '', mockService);
+    const response = { message: 'test' };
+    mockService.execute.mockResolvedValueOnce(response);
+
+    await route.handler();
+
+    expect(mockService.execute).toHaveBeenCalledTimes(1);
+    expect(mockService.execute).toHaveBeenCalledWith();
+  });
+
+  test('should propagate the service error', async () => {
+    const route = new Get<%= pascalCase(name) %>Route(mockContext, '', mockService);
+    mockService.execute.mockRejectedValueOnce(new Error('test'));
+
+    await expect(route.handler()).rejects.toThrow();
+
+    expect(mockService.execute).toHaveBeenCalledTimes(1);
+  });
+});

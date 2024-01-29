@@ -76,6 +76,9 @@ devDependencies:
   '@nx/workspace':
     specifier: 17.2.8
     version: 17.2.8(@swc-node/register@1.6.8)(@swc/core@1.3.104)
+  '@phenomnomnominal/tsquery':
+    specifier: ^6.1.3
+    version: 6.1.3(typescript@5.2.2)
   '@playwright/test':
     specifier: ^1.36.0
     version: 1.41.0
@@ -2491,6 +2494,16 @@ packages:
       esquery: 1.5.0
       typescript: 5.2.2
 
+  /@phenomnomnominal/tsquery@6.1.3(typescript@5.2.2):
+    resolution: {integrity: sha512-CEqpJ872StsxRmwv9ePCZ4BCisrJSlREUC5XxIRYxhvODt4aQoJFFmjTgaP6meyKiiXxxN/VWPZ58j4yHXRkmw==}
+    peerDependencies:
+      typescript: ^3 || ^4 || ^5
+    dependencies:
+      '@types/esquery': 1.5.3
+      esquery: 1.5.0
+      typescript: 5.2.2
+    dev: true
+
   /@playwright/test@1.41.0:
     resolution: {integrity: sha512-Grvzj841THwtpBOrfiHOeYTJQxDRnKofMSzCiV8XeyLWu3o89qftQ4BCKfkziJhSUQRd0utKhrddtIsiraIwmw==}
     engines: {node: '>=16'}
@@ -2980,6 +2993,12 @@ packages:
     dependencies:
       '@types/estree': 1.0.5
       '@types/json-schema': 7.0.15
+
+  /@types/esquery@1.5.3:
+    resolution: {integrity: sha512-c55hQOcoPkWDfuEN9EdP1YyNH4D909U40gUEpY0nB5PWHExWHEPxcx3sx0fJ1Gzf4j1OpWktmIgciIlpgHtfDg==}
+    dependencies:
+      '@types/estree': 1.0.5
+    dev: true
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}

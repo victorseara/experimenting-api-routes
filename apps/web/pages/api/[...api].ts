@@ -9,6 +9,8 @@ import {
   GetLaunchpadRoute,
   GetLaunchpadService,
 } from '@self/pages/launchpad/server';
+import { PetStoreAdapter } from '@self/open-api';
+
 
 const apiRouter = new Router({
   log: 'info',
@@ -17,6 +19,7 @@ const apiRouter = new Router({
     [GetLaunchpadConfig.injectionKey]: GetLaunchpadRoute,
   },
   services: [GetHomeDataService, GetLaunchpadService],
+  openApi: [PetStoreAdapter],
 });
 
 export default apiRouter.handler;

@@ -1,3 +1,4 @@
+import type { GetServerSideProps } from 'next';
 import { useGet<%= pascalCase(name) %>Query } from '../hooks/use-get-<%= name %>.query';
 
 export function <%= pascalCase(name) %>Page() {

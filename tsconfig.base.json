@@ -26,6 +26,12 @@
       "@self/home-page-final/server": ["libs/pages/home-page/src/server.ts"],
       "@self/home-page/server": ["libs/features/home-page/src/server.ts"],
       "@self/open-api": ["libs/api-utils/open-api/src/index.ts"],
+      "@self/pages/company-settings": [
+        "libs/pages/company-settings/src/index.ts"
+      ],
+      "@self/pages/company-settings/server": [
+        "libs/pages/company-settings/src/server.ts"
+      ],
       "@self/pages/launchpad": ["libs/pages/launchpad/src/index.ts"],
       "@self/pages/launchpad/server": ["libs/pages/launchpad/src/server.ts"],
       "@self/pet-page": ["libs/features/pet-page/src/index.ts"],

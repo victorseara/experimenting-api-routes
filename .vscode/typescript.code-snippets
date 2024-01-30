@@ -1,0 +1,89 @@
+{
+		"Route Class": {
+		  "prefix": "gti-new-route",
+		  "body": [
+			"import { AbstractRoute, CoreInjectionKeys, TRouteContext, TRouteHandler } from '@self/api-core/server';",
+			"import { inject, injectable } from 'tsyringe';",
+			"import { ${1:ConfigName}Config } from '../config/${2:config-path}-api.config';",
+			"import { T${1:ResponseName}Response } from './${3:schema-path}.schema';",
+			"import { ${1:ServiceName}Service } from './${3:service-path}.service';",
+			"",
+			"@injectable()",
+			"export class ${1:ClassName}Route extends AbstractRoute<T${1:ResponseName}Response> {",
+			"  constructor(",
+			"    @inject(CoreInjectionKeys.RequestContext)",
+			"    context: TRouteContext,",
+			"    @inject(CoreInjectionKeys.BasePath)",
+			"    basePath: string,",
+			"    @inject(${1:ServiceName}Service.name) private ${1/(.*)/${1:/camelcase}/}: ${1:ServiceName}Service",
+			"  ) {",
+			"    super(context, ${1:ConfigName}Config.injectionKey, basePath);",
+			"  }",
+			"  handler: TRouteHandler = async () => {",
+			"    throw new Error('Method not implemented.');",
+			"  };",
+			"}"
+		  ],
+		  "description": "Creates a new route class"
+		},
+		"Service Class": {
+			"prefix": "gti-new-service",
+			"body": [
+			  "import { TService } from '@self/api-core';",
+			  "import { T${1:ResponseName}Response } from './${2:schema-path}.schema';",
+			  "import { injectable } from 'tsyringe';",
+			  "",
+			  "@injectable()",
+			  "export class ${3:ServiceName}Service implements TService<${4:Input}, T${1:ResponseName}Response> {",
+			  "  execute() {",
+			  "		throw new Error('Method not implemented.');"
+			  "  }",
+			  "}"
+			],
+			"description": "Creates a new service class"
+		  },
+		  "Client Class": {
+			"prefix": "gti-new-client",
+			"body": [
+			  "import { AbstractApiClient } from '@self/api-core';",
+			  "import { T${1:ResponseName}Response } from './${2:schema-path}.schema';",
+			  "import { ${1:ConfigName}Config } from '../config/${3:config-path}-api-config';",
+			  "",
+			  "export class ${4:ClientName}Client extends AbstractApiClient<T${1:ResponseName}Response> {",
+			  "  async execute() {",
+			  "    const response = await this.client.get<T${1:ResponseName}Response>(",
+			  "      ${1:ConfigName}Config.path",
+			  "    );",
+			  "",
+			  "    return response.data.result;",
+			  "  }",
+			  "}"
+			],
+			"description": "Creates a new client class"
+		  },
+			"Constructor Dependency": {
+			  "prefix": "gti-inject",
+			  "body": [
+				"@inject(${1:DependencyName}.name) private ${1/(.*)/${1:/camelcase}/}: ${1:DependencyName}"
+			  ],
+			  "description": "Adds a new dependency to the constructor"
+			},
+			"Route Configuration": {
+				"prefix": "gti-new-route-config",
+				"body": [
+				  "export const ${1:ConfigName} = new RouteConfiguration(",
+				  "  '${2:HTTP_METHOD}',",
+				  "  '${3:ROUTE_PATH}'",
+				  ");"
+				],
+				"description": "Creates a new route configuration"
+			  },
+        "Zod Schema": {
+          "prefix": "gti-new-schema",
+          "body": [
+            "export const ${1:ObjectName}Schema = z.object({});",
+            "export type T${1:ObjectName} = z.infer<typeof ${1:ObjectName}Schema>;"
+          ],
+          "description": "Creates a new Zod schema and its associated type"
+        }
+}

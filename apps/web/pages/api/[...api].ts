@@ -28,6 +28,5 @@ const apiRouter = new Router({
     GetCompanySettingsService,
   ],
   openApi: [PetStoreAdapter],
-  operations: [GetHomeDataService],
 });
 export default apiRouter.handler;
